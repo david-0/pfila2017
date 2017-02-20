@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
+body {
+  font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  margin: 0;
+}
+
+/*Overwrite material design stuff until palette provider is available*/
+.mat-toolbar.mat-accent {
+  background: #465A65;
+}
+
+.mat-sidenav-container {
+  background: rgba(10,255,10,0.1);
+}
+
+button.mat-button {
+  margin: 0.5em;
+  background: #667A85;
+}
+
