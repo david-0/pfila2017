@@ -1,62 +1,61 @@
-<form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <!--  <section class="example-section">
-      <md-select placeholder="Ortsgruppe" [(ngModel)]="selectedGroup" name="group" class="example-section-left" required>
-        <md-option *ngFor="let group of groups" [value]="group">
-          {{group.name}}
-        </md-option>
-      </md-select>
-      <md-select placeholder="Gruppe" [(ngModel)]="selectedSubgroup" name="subgroup" *ngIf="selectedGroup"
-                 class="example-section-middle" required>
-        <md-option *ngFor="let subgroup of selectedGroup.groups" [value]="subgroup">
-          {{subgroup.name}}
-        </md-option>
-      </md-select>
-      <md-checkbox [(ngModel)]="person.leader" *ngIf="selectedSubgroup" name="leader" class="example-section-right">
-        Ich bin Leiter
-      </md-checkbox>
-    </section>
+<form class="example-form" (ngSubmit)="onSubmit()">
+  <section class="example-section">
+    <md-select placeholder="Ortsgruppe" [(ngModel)]="selectedGroup" name="group" class="example-section-left" required>
+      <md-option *ngFor="let group of groups" [value]="group">
+        {{group.name}}
+      </md-option>
+    </md-select>
+    <md-select placeholder="Gruppe" [(ngModel)]="selectedSubgroup" name="subgroup" *ngIf="selectedGroup"
+               class="example-section-middle" required>
+      <md-option *ngFor="let subgroup of selectedGroup.groups" [value]="subgroup">
+        {{subgroup.name}}
+      </md-option>
+    </md-select>
+    <md-checkbox [(ngModel)]="person.leader" *ngIf="selectedSubgroup" name="leader" class="example-section-right">
+      Ich bin Leiter
+    </md-checkbox>
+  </section>
 
-    <section class="example-section">
-      <md-input-container class="example-full-width example-section-left example-section-middle-size">
-        <input mdInput placeholder="Vorname" required>
-      </md-input-container>
-      <md-input-container class="example-full-width example-section-right example-section-middle-size">
-        <input mdInput placeholder="Nachname" required>
-      </md-input-container>
-    </section>
+  <section class="example-section">
+    <md-input-container class="example-full-width example-section-left example-section-middle-size">
+      <input mdInput placeholder="Vorname" required>
+    </md-input-container>
+    <md-input-container class="example-full-width example-section-right example-section-middle-size">
+      <input mdInput placeholder="Nachname" required>
+    </md-input-container>
+  </section>
 
-    <section class="example-section">
-      <md-input-container class="example-full-width example-section-left example-section-big">
-        <input mdInput placeholder="Strasse" required>
-      </md-input-container>
-      <md-input-container class="example-full-width example-section-right example-section-small">
-        <input mdInput placeholder="Hausnummer" required>
-      </md-input-container>
-    </section>
+  <section class="example-section">
+    <md-input-container class="example-full-width example-section-left example-section-big">
+      <input mdInput placeholder="Strasse" required>
+    </md-input-container>
+    <md-input-container class="example-full-width example-section-right example-section-small">
+      <input mdInput placeholder="Hausnummer" required>
+    </md-input-container>
+  </section>
 
-    <section class="example-section">
-      <md-input-container class="example-full-width example-section-left example-section-small">
-        <input mdInput #PLZ maxlength="4" placeholder="PLZ" required  [ngControl]="fullname" pattern="[0-9]*">
-        <md-hint align="end">{{PLZ.value.length}} / 4</md-hint>
-      </md-input-container>
+  <section class="example-section">
+    <md-input-container class="example-full-width example-section-left example-section-small">
+      <input mdInput #PLZ maxlength="4" placeholder="PLZ" required pattern="[0-9]*">
+      <md-hint align="end">{{PLZ.value.length}} / 4</md-hint>
+    </md-input-container>
 
-      <md-input-container class="example-full-width example-section-right example-section-big">
-        <input mdInput placeholder="Ort" required>
-      </md-input-container>
-    </section>
-  -->
+    <md-input-container class="example-full-width example-section-right example-section-big">
+      <input mdInput placeholder="Ort" required>
+    </md-input-container>
+  </section>
   <section class="example-section">
     <md-input-container class="example-full-width">
-      <input mdInput placeholder="Email" formControlName="email">
-<!--      <md-hint [ngStyle]="{'color': 'red'}" align="start"></md-hint>-->
+      <input mdInput placeholder="Email" required>
+<!--      <md-hint [ngStyle]="{'color': 'red'}" align="start"></md-hint> -->
     </md-input-container>
   </section>
   <section class="example-section">
     <md-input-container class="example-full-width example-section-left">
-      <input mdInput placeholder="Telefonnummer" formControlName="phoneNumber">
+      <input mdInput placeholder="Telefonnummer" required>
     </md-input-container>
     <md-input-container class="example-full-width example-section-right">
-      <input mdInput placeholder="Geburtsdatum" formControlName="dateOfBirth">
+      <input mdInput placeholder="Geburtsdatum" required>
     </md-input-container>
   </section>
   <section class="example-section">
