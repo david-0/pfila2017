@@ -1,14 +1,15 @@
 export class Person {
   id: any;
-  surname: string;
+  firstname: string;
   lastname: string;
   street: string;
   streetNumber: string;
-  PLZ: string;
-  City: string;
+  plz: string;
+  city: string;
   email: string;
-  telefonNumber: string;
-  birthdate: string;
+  phoneNumber: string;
+  dateOfBirth: string;
   group: string;
+  subgroup: string;
   leader: boolean;
 }

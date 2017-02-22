@@ -5,8 +5,7 @@
 
 .example-full-width {
   width: 100%;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
+  margin: 0.5em;
 }
 
 .example-section {
@@ -14,12 +13,8 @@
   flex-wrap: wrap;
   align-content: center;
   align-items: baseline;
+  min-height: 3em;
 }
-
-
-/*  * {
-  }*/
-
 
 .wrap {
   flex-wrap: wrap;
@@ -41,8 +36,35 @@
   width: 15em;
 }
 
-.mat-select {
+.select-container {
+  display:flex;
+  flex-direction: column;
   margin-left: 0.5em;
   margin-right: 0.5em;
-  margin-bottom: 1em;
+}
+
+
+/*.mat-input-container {
+  background-color: #EEEEEE;
+}*/
+
+.grayButton {
+  background: #A6BAC5;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.button-row {
+  display: flex;
+}
+
+.hint {
+  margin-top: 0.2em;
+  margin-bottom: 0;
+  display:block;
+  font-size:75%;
+  bottom:0;
+  color: red;
 }

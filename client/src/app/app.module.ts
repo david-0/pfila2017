@@ -9,6 +9,7 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {InfoComponent} from "./info/info.component";
 import {TeamComponent} from "./team/team.component";
 import {HomeComponent} from "./home/home.component";
+import {DebugPipe} from "./registration/debug.pipe";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {HomeComponent} from "./home/home.component";
     InfoComponent,
     TeamComponent,
     HomeComponent,
+    DebugPipe,
   ],
   imports: [
     BrowserModule,

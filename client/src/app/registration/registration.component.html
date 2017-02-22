@@ -1,64 +1,91 @@
-<form class="example-form" (ngSubmit)="onSubmit()">
+<form class="example-form" [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)">
   <section class="example-section">
-    <md-select placeholder="Ortsgruppe" [(ngModel)]="selectedGroup" name="group" class="example-section-left" required>
-      <md-option *ngFor="let group of groups" [value]="group">
-        {{group.name}}
-      </md-option>
-    </md-select>
-    <md-select placeholder="Gruppe" [(ngModel)]="selectedSubgroup" name="subgroup" *ngIf="selectedGroup"
-               class="example-section-middle" required>
-      <md-option *ngFor="let subgroup of selectedGroup.groups" [value]="subgroup">
-        {{subgroup.name}}
-      </md-option>
-    </md-select>
-    <md-checkbox [(ngModel)]="person.leader" *ngIf="selectedSubgroup" name="leader" class="example-section-right">
+    <div class="select-container">
+      <md-select placeholder="Ortsgruppe" formControlName="group" class="example-section-left"
+                 (ngModelChange)="resetSubgroup($event)">
+        <md-option *ngFor="let group of groups" [value]="group">
+          {{group.name }}
+        </md-option>
+      </md-select>
+      <p class="hint" *ngIf="!form.controls.group.valid">erforderlich</p>
+    </div>
+
+    <div class="select-container" *ngIf="form.controls.group.value">
+      <md-select placeholder="Gruppe" formControlName="subgroup"
+                 class="example-section-middle">
+        <md-option *ngFor="let subgroup of form.controls.group.value.groups" [value]="subgroup">
+          {{subgroup.name}}
+        </md-option>
+      </md-select>
+      <p class="hint" *ngIf="!form.controls.subgroup.valid">erforderlich</p>
+    </div>
+    <md-checkbox *ngIf="form.controls.subgroup.value" formControlName="leader" class="example-section-right">
       Ich bin Leiter
     </md-checkbox>
   </section>
 
   <section class="example-section">
     <md-input-container class="example-full-width example-section-left example-section-middle-size">
-      <input mdInput placeholder="Vorname" required>
+      <input mdInput placeholder="Vorname" formControlName="firstname">
+      <md-hint *ngIf="!form.controls.firstname.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
     <md-input-container class="example-full-width example-section-right example-section-middle-size">
-      <input mdInput placeholder="Nachname" required>
+      <input mdInput placeholder="Nachname" formControlName="lastname">
+      <md-hint *ngIf="!form.controls.lastname.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
   </section>
 
   <section class="example-section">
     <md-input-container class="example-full-width example-section-left example-section-big">
-      <input mdInput placeholder="Strasse" required>
+      <input mdInput placeholder="Strasse" formControlName="street">
+      <md-hint *ngIf="!form.controls.street.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
     <md-input-container class="example-full-width example-section-right example-section-small">
-      <input mdInput placeholder="Hausnummer" required>
+      <input mdInput placeholder="Hausnummer" formControlName="streetNumber">
     </md-input-container>
   </section>
 
   <section class="example-section">
     <md-input-container class="example-full-width example-section-left example-section-small">
-      <input mdInput #PLZ maxlength="4" placeholder="PLZ" required pattern="[0-9]*">
-      <md-hint align="end">{{PLZ.value.length}} / 4</md-hint>
+      <input mdInput placeholder="PLZ" formControlName="plz">
+      <md-hint *ngIf="!form.controls.plz.valid" [ngStyle]="{'color': 'red'}" align="start">gültige PLZ</md-hint>
+      <!-- https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=zipcode&limit=2&searchText=8001 -->
     </md-input-container>
 
     <md-input-container class="example-full-width example-section-right example-section-big">
-      <input mdInput placeholder="Ort" required>
+      <input mdInput placeholder="Ort" formControlName="city">
+      <md-hint *ngIf="!form.controls.city.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
   </section>
   <section class="example-section">
     <md-input-container class="example-full-width">
-      <input mdInput placeholder="Email" required>
-<!--      <md-hint [ngStyle]="{'color': 'red'}" align="start"></md-hint> -->
+      <input mdInput placeholder="Email" formControlName="email">
+      <md-hint *ngIf="!form.controls.email.valid" [ngStyle]="{'color': 'red'}" align="start">gültige Emailadresse
+        erforderlich
+      </md-hint>
     </md-input-container>
   </section>
   <section class="example-section">
-    <md-input-container class="example-full-width example-section-left">
-      <input mdInput placeholder="Telefonnummer" required>
+    <md-input-container class="example-full-width example-section-left example-section-middle-size">
+      <input mdInput placeholder="Telefonnummer" formControlName="phoneNumber">
+      <md-hint *ngIf="!form.controls.phoneNumber.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+      </md-hint>
     </md-input-container>
-    <md-input-container class="example-full-width example-section-right">
-      <input mdInput placeholder="Geburtsdatum" required>
+    <md-input-container class="example-full-width example-section-right example-section-middle-size">
+      <input mdInput placeholder="Geburtsdatum" formControlName="dateOfBirth">
+      <md-hint *ngIf="!form.controls.dateOfBirth.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, Format:
+        DD.MM.YYYY
+      </md-hint>
     </md-input-container>
   </section>
-  <section class="example-section">
-    <button md-button>Anmelden</button>
-  </section>
+  <div class="button-row">
+    <button md-button class="grayButton" (click)="reset()">Reset</button>
+    <span class="fill-remaining-space"></span>
+    <button md-button type="submit" [disabled]="!form.valid" class="grayButton">Anmelden</button>
+  </div>
+  <div class="margin-20">
+    <div>form details:-</div>
+    <pre>Is form valid?: <br>{{form.valid | json}}</pre>
+    <pre>form value: <br>{{form.value | json}}</pre>
+  </div>
 </form>
