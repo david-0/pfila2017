@@ -31,7 +31,6 @@ export class RegistrationComponent implements OnInit {
       "phoneNumber": new FormControl('', [Validators.required]),
       "dateOfBirth": new FormControl('', [Validators.required, Validators.pattern(swissDatePattern)]),
       "allergies": new FormControl('', []),
-      "diet": new FormControl('', []),
       "comment": new FormControl('', []),
       "notification": new FormControl('', [Validators.required]),
       "leader": new FormControl('', []),
