@@ -1,52 +1,40 @@
 <md-sidenav-container fullscreen>
 
-
-  <!--  <md-toolbar md-raised-button color="accent">
-      <button md-button (click)="home()">
-        <md-icon>home</md-icon>
-        Home
-      </button>
-      <button md-button (click)="info()">
-        <md-icon>info</md-icon>
-        Infos
-      </button>
-      <button md-button (click)="registration()">
-        <md-icon>grade</md-icon>
-        Anmeldung
-      </button>
-      <span class="fill-remaining-space"></span>
-      <button md-button (click)="team()">
-        <md-icon>people</md-icon>
-        Team
-      </button>
-    </md-toolbar>-->
-
   <header class="header">
-    <button md-icon-button [mdMenuTriggerFor]="menu">
+    <button md-icon-button (click)="sidenav.open()">
       <md-icon>more_vert</md-icon>
     </button>
     <h1 class="header">
       Pfila 2017
     </h1>
   </header>
-  <md-menu #menu="mdMenu">
-    <button md-menu-item (click)="home()">
-      <md-icon>home</md-icon>
-      Home
-    </button>
-    <button md-menu-item (click)="info()">
-      <md-icon>info</md-icon>
-      Infos
-    </button>
-    <button md-menu-item (click)="registration()">
-      <md-icon>grade</md-icon>
-      Anmeldung
-    </button>
-    <span class="fill-remaining-space"></span>
-    <button md-menu-item (click)="team()">
-      <md-icon>people</md-icon>
-      Team
-    </button>
-  </md-menu>
+
+  <md-sidenav [mode]="push" #sidenav>
+    <md-toolbar color="primary">Menu
+    </md-toolbar>
+    <md-nav-list>
+
+      <a md-list-item [routerLink]="['/home']" (click)="sidenav.close()">
+        <md-icon md-list-icon>home</md-icon>
+        <span md-line>Home</span>
+        <span md-line class="secondary">Home</span>
+      </a>
+      <a md-list-item [routerLink]="['/info']" (click)="sidenav.close()">
+        <md-icon md-list-icon>info</md-icon>
+        <span md-line>Info</span>
+        <span md-line class="secondary">Detail Info zum Pfila</span>
+      </a>
+      <a md-list-item [routerLink]="['/registration']" (click)="sidenav.close()">
+        <md-icon md-list-icon>grade</md-icon>
+        <span md-line>Anmeldung</span>
+        <span md-line class="secondary">für Ameisli und Jungschärler</span>
+      </a>
+      <a md-list-item [routerLink]="['/team']" (click)="sidenav.close()">
+        <md-icon md-list-icon>people</md-icon>
+        <span md-line>Team</span>
+        <span md-line class="secondary">Verantwortliches Team</span>
+      </a>
+    </md-nav-list>
+  </md-sidenav>
   <router-outlet></router-outlet>
 </md-sidenav-container>

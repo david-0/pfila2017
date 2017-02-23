@@ -92,13 +92,24 @@
     </section>
     <section class="section">
       <md-input-container class="full-width">
-        <textarea mdInput placeholder="Bemerkungen" fromControlName="comments"></textarea>
+        <textarea mdInput placeholder="Bemerkungen" fromControlName="comment"></textarea>
       </md-input-container>
     </section>
 
-    <md-checkbox formControlName="leader" class="full-width">
-      Ich bin Leiter
-    </md-checkbox>
+    <section class="section full-width">
+      <div>Ich wünsche Detailinformationen per</div>
+      <div>
+        <md-radio-group class="full-width" formControlName="notification">
+          <md-radio-button value="email">E-Mail</md-radio-button>
+          <md-radio-button value="post">Post</md-radio-button>
+        </md-radio-group>
+      </div>
+    </section>
+    <section class="section full-width">
+      <md-checkbox formControlName="leader">
+        Ich bin Leiter
+      </md-checkbox>
+    </section>
 
     <div class="button-row">
       <button md-button class="grayButton" (click)="reset()">Reset</button>

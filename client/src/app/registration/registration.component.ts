@@ -21,7 +21,6 @@ export class RegistrationComponent implements OnInit {
     this.form = fb.group({
       "group": new FormControl('', [Validators.required]),
       "subgroup": new FormControl('', [Validators.required]),
-      "leader": new FormControl('', []),
       "firstname": new FormControl('', [Validators.required]),
       "lastname": new FormControl('', [Validators.required]),
       "street": new FormControl('', [Validators.required]),
@@ -31,6 +30,11 @@ export class RegistrationComponent implements OnInit {
       "email": new FormControl('', [Validators.pattern(emailPattern)]),
       "phoneNumber": new FormControl('', [Validators.required]),
       "dateOfBirth": new FormControl('', [Validators.required, Validators.pattern(swissDatePattern)]),
+      "allergies": new FormControl('', []),
+      "diet": new FormControl('', []),
+      "comment": new FormControl('', []),
+      "notification": new FormControl('', [Validators.required]),
+      "leader": new FormControl('', []),
     });
   }
 
