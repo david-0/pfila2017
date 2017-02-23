@@ -2,6 +2,7 @@
   max-width: 500px;
   padding-top: 1.5em;
   background-color: #EEEEEE;
+  border-radius: 5px;
 }
 
 .full-width {
@@ -46,7 +47,7 @@
 }
 
 .select-container {
-  display:flex;
+  display: flex;
   flex-direction: column;
   margin-left: 0.5em;
   margin-right: 0.5em;
@@ -66,13 +67,9 @@
   margin-bottom: 0.5em;
 }
 
-
 .comment {
   resize: vertical;
 }
-/*.mat-input-container {
-  background-color: #EEEEEE;
-}*/
 
 .grayButton {
   background: #A6BAC5;
@@ -89,9 +86,9 @@
 .hint {
   margin-top: 0.2em;
   margin-bottom: 0;
-  display:block;
-  font-size:75%;
-  bottom:0;
+  display: block;
+  font-size: 75%;
+  bottom: 0;
   color: red;
 }
 

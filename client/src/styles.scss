@@ -5,17 +5,6 @@ body {
   margin: 0;
 }
 
-/*Overwrite material design stuff until palette provider is available*/
-.mat-toolbar.mat-accent {
-/*  background: #465A65;*/
-}
-
-.mat-sidenav-container {
-  background: rgba(10,255,10,0.1);
-}
-
 button.mat-button {
   margin: 0.5em;
-//  background: #465A65;
-  background: #667A85;
 }
