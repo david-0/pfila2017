@@ -74,8 +74,7 @@
     <md-input-container class="full-width section-middle-size">
       <input mdInput placeholder="Geburtsdatum" formControlName="dateOfBirth">
       <md-hint *ngIf="!form.controls.dateOfBirth.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich,
-        Format:
-        DD.MM.YYYY
+        Format: DD.MM.YYYY
       </md-hint>
     </md-input-container>
   </section>
@@ -86,11 +85,11 @@
   </section>
   <section class="section">
     <md-input-container class="full-width">
-      <textarea mdInput placeholder="Bemerkungen" fromControlName="comment"></textarea>
+      <textarea mdInput placeholder="Bemerkungen" class="comment" fromControlName="comment"></textarea>
     </md-input-container>
   </section>
 
-  <section class="section full-width">
+  <section class="tiny-section full-width">
     <div>Ich wünsche Detailinformationen per</div>
     <div>
       <md-radio-group class="full-width" formControlName="notification">
@@ -99,7 +98,7 @@
       </md-radio-group>
     </div>
   </section>
-  <section class="section full-width">
+  <section class="tiny-section full-width">
     <md-checkbox formControlName="leader">
       Ich bin Leiter
     </md-checkbox>
