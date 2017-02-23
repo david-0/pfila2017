@@ -14,8 +14,6 @@ export class RegistrationComponent implements OnInit {
   private form: FormGroup;
   private groups: Group[];
 
-  private person: Person;
-
   constructor(fb: FormBuilder) {
     let swissDatePattern = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
     let zipcodePattern = /^((DE-\d{5})|((CH-)?\d{4})){1}$/;
@@ -34,25 +32,20 @@ export class RegistrationComponent implements OnInit {
       "phoneNumber": new FormControl('', [Validators.required]),
       "dateOfBirth": new FormControl('', [Validators.required, Validators.pattern(swissDatePattern)]),
     });
-
-    /*    this.form.valueChanges.subscribe((formValue) => {
-     console.log(` 2222 ${JSON.stringify(formValue)}` );
-
-     //        this.anmelden.disable();
-
-     });*/
   }
 
   ngOnInit() {
-    this.person = new Person();
     let ameisliRothenfluh = {id: 11, name: "Ameisli", minimumAge: 6, maximumAge: 10, responsible: "Kurt"};
     let jungschiRothenfluh = {id: 12, name: "Jungschi", minimumAge: 9, maximumAge: 14, responsible: "Andrea"};
     let groupRothenfluh = {id: 1, name: "Rothenfluh", groups: [ameisliRothenfluh, jungschiRothenfluh]};
 
+    let unknownSubgroup = {id: 31, name: "keine", minimumAge: 5, maximumAge: 14, responsible: "Sandra" };
+    let groupUnknown = {id: 3, name: "Ich gehöre zu keiner Gruppe", groups: [unknownSubgroup]};
+
     let jungschiLausen = {id: 13, name: "Jungschi", minimumAge: 9, maximumAge: 14, responsible: "Laura"};
     let groupLausen = {id: 2, name: "Lausen", groups: [jungschiLausen]};
 
-    this.groups = [groupRothenfluh, groupLausen]
+    this.groups = [groupRothenfluh, groupLausen, groupUnknown]
   }
 
   private resetSubgroup(event: any) {
@@ -63,11 +56,12 @@ export class RegistrationComponent implements OnInit {
 
   private save(person: Person, valid: boolean) {
     console.log(person);
+    // write to DB
     return valid;
   }
 
   private reset() {
     this.form.reset();
-    this.person = new Person();
   }
+
 }

@@ -9,6 +9,9 @@ export class Person {
   email: string;
   phoneNumber: string;
   dateOfBirth: string;
+  allergies: string;
+  diet: string;
+  comments: string;
   group: string;
   subgroup: string;
   leader: boolean;

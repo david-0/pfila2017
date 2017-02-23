@@ -1,25 +1,52 @@
 <md-sidenav-container fullscreen>
-  <h1 class="header">
-    Pfila 2017
-  </h1>
-  <md-toolbar md-raised-button color="accent">
-    <button md-button (click)="home()">
+
+
+  <!--  <md-toolbar md-raised-button color="accent">
+      <button md-button (click)="home()">
+        <md-icon>home</md-icon>
+        Home
+      </button>
+      <button md-button (click)="info()">
+        <md-icon>info</md-icon>
+        Infos
+      </button>
+      <button md-button (click)="registration()">
+        <md-icon>grade</md-icon>
+        Anmeldung
+      </button>
+      <span class="fill-remaining-space"></span>
+      <button md-button (click)="team()">
+        <md-icon>people</md-icon>
+        Team
+      </button>
+    </md-toolbar>-->
+
+  <header class="header">
+    <button md-icon-button [mdMenuTriggerFor]="menu">
+      <md-icon>more_vert</md-icon>
+    </button>
+    <h1 class="header">
+      Pfila 2017
+    </h1>
+  </header>
+  <md-menu #menu="mdMenu">
+    <button md-menu-item (click)="home()">
       <md-icon>home</md-icon>
       Home
     </button>
-    <button md-button (click)="info()">
+    <button md-menu-item (click)="info()">
       <md-icon>info</md-icon>
       Infos
     </button>
-    <button md-button (click)="registration()">
+    <button md-menu-item (click)="registration()">
       <md-icon>grade</md-icon>
       Anmeldung
     </button>
     <span class="fill-remaining-space"></span>
-    <button md-button (click)="team()">
+    <button md-menu-item (click)="team()">
       <md-icon>people</md-icon>
       Team
     </button>
-  </md-toolbar>
+  </md-menu>
   <router-outlet></router-outlet>
 </md-sidenav-container>

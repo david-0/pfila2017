@@ -10,6 +10,7 @@ import {InfoComponent} from "./info/info.component";
 import {TeamComponent} from "./team/team.component";
 import {HomeComponent} from "./home/home.component";
 import {DebugPipe} from "./registration/debug.pipe";
+import 'hammerjs';
 
 @NgModule({
   declarations: [

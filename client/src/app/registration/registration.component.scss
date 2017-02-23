@@ -1,14 +1,15 @@
-.example-form {
+.form {
   max-width: 500px;
-  margin-top: 1.5em;
+  padding-top: 1.5em;
+  background-color: #EEEEEE;
 }
 
-.example-full-width {
+.full-width {
   width: 100%;
   margin: 0.5em;
 }
 
-.example-section {
+.section {
   display: flex;
   flex-wrap: wrap;
   align-content: center;
@@ -21,17 +22,17 @@
   flex-direction: column;
 }
 
-.example-section-small {
+.section-small {
   flex-grow: 1;
   width: 5em;
 }
 
-.example-section-middle-size {
+.section-middle-size {
   flex-grow: 2;
   width: 10em;
 }
 
-.example-section-big {
+.section-big {
   flex-grow: 3;
   width: 15em;
 }
@@ -41,6 +42,20 @@
   flex-direction: column;
   margin-left: 0.5em;
   margin-right: 0.5em;
+}
+
+.date-element {
+  margin-top: 0;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0;
+}
+
+.h2-element {
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 
@@ -68,3 +83,5 @@
   bottom:0;
   color: red;
 }
+
+
