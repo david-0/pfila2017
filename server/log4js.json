@@ -1,0 +1,26 @@
+{
+  "appenders": [
+    {
+      "type": "console",
+      "layout": {
+        "type": "pattern",
+        "pattern": "%d [%[%-5p%]] %c - %m"
+      }
+    },
+    {
+      "type": "dateFile",
+      "filename": "logs/homeautomation.log",
+      "pattern": "-yyyyMMdd",
+      "alwaysIncludePattern": false,
+      "layout": {
+        "type": "pattern",
+        "pattern": "%d [%-5p] %c - %m"
+      }
+    }
+  ],
+  "levels": {
+    "[all]": "DEBUG",
+    "GenericDataController": "DEBUG",
+    "GenericSocket": "DEBUG"
+  }
+}

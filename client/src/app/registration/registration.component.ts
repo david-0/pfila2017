@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Person} from "../model/person";
-import {Group} from "../model/group";
-import {Subgroup} from "../model/subgroup";
+import {Component, OnInit} from "@angular/core";
 import {Validators, FormControl, FormGroup, FormBuilder} from "@angular/forms";
+import {ClientSocketService} from "../remote/client-socket.service";
+import {Router} from "@angular/router";
+import {GenericService} from "../remote/generic.service";
+import {AuthHttp} from "angular2-jwt";
+import {IPerson} from "../../../../server/entities/person.interface";
+import {IGroup} from "../../../../server/entities/group.interface";
 
 @Component({
   selector: 'app-registration',
@@ -12,9 +15,10 @@ import {Validators, FormControl, FormGroup, FormBuilder} from "@angular/forms";
 export class RegistrationComponent implements OnInit {
 
   private form: FormGroup;
-  private groups: Group[];
+  private groups: IGroup[];
+  private genericService: GenericService<IPerson>;
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private router: Router, private socketService: ClientSocketService, private authHttp: AuthHttp) {
     let swissDatePattern = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
     let zipcodePattern = /^((DE-\d{5})|((CH-)?\d{4})){1}$/;
     let emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -31,7 +35,7 @@ export class RegistrationComponent implements OnInit {
       "phoneNumber": new FormControl('', [Validators.required]),
       "dateOfBirth": new FormControl('', [Validators.required, Validators.pattern(swissDatePattern)]),
       "allergies": new FormControl('', []),
-      "comment": new FormControl('', []),
+      "comments": new FormControl('', []),
       "notification": new FormControl('', [Validators.required]),
       "leader": new FormControl('', []),
     });
@@ -42,13 +46,16 @@ export class RegistrationComponent implements OnInit {
     let jungschiRothenfluh = {id: 12, name: "Jungschi", minimumAge: 9, maximumAge: 14, responsible: "Andrea"};
     let groupRothenfluh = {id: 1, name: "Rothenfluh", groups: [ameisliRothenfluh, jungschiRothenfluh]};
 
-    let unknownSubgroup = {id: 31, name: "keine", minimumAge: 5, maximumAge: 14, responsible: "Sandra" };
+    let unknownSubgroup = {id: 31, name: "keine", minimumAge: 5, maximumAge: 14, responsible: "Sandra"};
     let groupUnknown = {id: 3, name: "Ich gehöre zu keiner Gruppe", groups: [unknownSubgroup]};
 
     let jungschiLausen = {id: 13, name: "Jungschi", minimumAge: 9, maximumAge: 14, responsible: "Laura"};
     let groupLausen = {id: 2, name: "Lausen", groups: [jungschiLausen]};
 
-    this.groups = [groupRothenfluh, groupLausen, groupUnknown]
+    this.groups = [groupRothenfluh, groupLausen, groupUnknown];
+
+    this.genericService = new GenericService<IPerson>(this.authHttp,
+      this.socketService, "/api/persons", "/persons");
   }
 
   private resetSubgroup(event: any) {
@@ -57,10 +64,28 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  private save(person: Person, valid: boolean) {
+  private save(data: any, valid: boolean) {
+    let person: IPerson = {id: data.id,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      street: data.street,
+      streetNumber: data.streetNumber,
+      plz: data.plz,
+      city: data.city,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      dateOfBirth: data.dateOfBirth,
+      allergies: data.allergies,
+      comments: data.comments,
+      subgroupId: data.subgroup.id,
+      leader: data.leader,
+    }
     console.log(person);
+    person.createDate = new Date();
     // write to DB
-    return valid;
+    this.genericService.create(person);
+    alert("Danke für die Anmeldung");
+    this.form.reset();
   }
 
   private reset() {
