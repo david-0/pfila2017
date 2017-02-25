@@ -2,7 +2,7 @@
 <form class="form" [formGroup]="form" novalidate>
   <section class="section">
     <div class="select-container">
-      <md-select placeholder="Ortsgruppe" formControlName="group" class="example-section-left"
+      <md-select placeholder="Ortsgruppe" formControlName="group" class="topborder"
                  (ngModelChange)="resetSubgroup($event)">
         <md-option *ngFor="let group of groups" [value]="group">
           {{group.name }}
@@ -12,7 +12,7 @@
     </div>
 
     <div class="select-container" *ngIf="form.controls.group.value">
-      <md-select placeholder="Gruppe" formControlName="subgroup" class="example-section-middle">
+      <md-select placeholder="Gruppe" formControlName="subgroup" class="topborder">
         <md-option *ngFor="let subgroup of form.controls.group.value.groups" [value]="subgroup">
           {{subgroup.name}}
         </md-option>
@@ -24,7 +24,7 @@
   </section>
 
   <section class="section">
-    <md-input-container class="full-width example-section-left section-middle-size">
+    <md-input-container class="full-width section-middle-size">
       <input mdInput placeholder="Vorname" formControlName="firstname">
       <md-hint *ngIf="!form.controls.firstname.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
       </md-hint>
@@ -89,15 +89,18 @@
     </md-input-container>
   </section>
 
-  <section class="tiny-section full-width">
-    <div>Ich wünsche Detailinformationen per</div>
-    <div>
-      <md-radio-group class="full-width" formControlName="notification">
-        <md-radio-button value="email">E-Mail</md-radio-button>
-        <md-radio-button value="post">Post</md-radio-button>
-      </md-radio-group>
-    </div>
-  </section>
+  <div class="info-container full-width">
+    <section class="tiny-section">
+      <div>Ich wünsche Detailinformationen per</div>
+      <div>
+        <md-radio-group class="full-width" formControlName="notification">
+          <md-radio-button value="email">E-Mail</md-radio-button>
+          <md-radio-button value="post">Post</md-radio-button>
+        </md-radio-group>
+      </div>
+    </section>
+    <p class="hint" *ngIf="!form.controls.notification.valid">erforderlich</p>
+  </div>
   <section class="tiny-section full-width">
     <md-checkbox formControlName="leader">
       Ich bin Leiter
@@ -107,7 +110,8 @@
   <div class="button-row">
     <button md-button class="grayButton" (click)="reset()">Reset</button>
     <span class="fill-remaining-space"></span>
-    <button md-button (click)="save(form.value, form.valid)" [disabled]="!form.valid" class="grayButton">Anmelden</button>
+    <button md-button (click)="save(form.value, form.valid)" [disabled]="!form.valid" class="grayButton">Anmelden
+    </button>
   </div>
 </form>
 <div [ngBusy]="{busy: busy, message: 'Anmeldung wird verarbeiet...', delay: 200, minDuration: 600}"></div>
