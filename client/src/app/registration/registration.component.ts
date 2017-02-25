@@ -56,7 +56,7 @@ export class RegistrationComponent implements OnInit {
 
   private getPlzObservable(input: Observable<string>): Observable<string> {
     return input
-      .filter(text => text.length > 3)
+      .filter(text => text && text.length > 3)
       .filter(text => !text.startsWith("DE-"))
       .map(text => (text.startsWith("CH-")) ? text.substr(4) : text)
       .filter(text => text.length == 4);
@@ -77,7 +77,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   private static extractCity(label: any): string {
-    let results = /^<b>[0-9]{4} - (.*) \([A-Z]{2}\)<\/b>$/g.exec(label);
+    let results = /^<b>[0-9]{4} - (.*) \([A-Z,]*\)<\/b>$/g.exec(label);
     return (results && results.length > 0) ? results[1] : "";
   }
 
@@ -130,11 +130,6 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  private reset() {
-    this.form.reset();
-  }
-
   openDialog() {
-
   }
 }
