@@ -6,7 +6,7 @@ import {IPerson} from "../../../../server/entities/person.interface";
 import {IGroup} from "../../../../server/entities/group.interface";
 import {Http} from "@angular/http";
 import {GenericRestService} from "../remote/generic-rest.service";
-import {Subscription} from "rxjs";
+import {Subscription, Observable} from "rxjs";
 
 @Component({
   selector: 'app-registration',
@@ -19,12 +19,17 @@ export class RegistrationComponent implements OnInit {
   private groups: IGroup[];
   private restService: GenericRestService<IPerson>;
   private busy: Subscription;
+  private plzControl: FormControl;
+  private cityControl: FormControl;
 
   constructor(private fb: FormBuilder, private router: Router, private socketService: ClientSocketService,
               private http: Http) {
     let swissDatePattern = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
     let zipcodePattern = /^((DE-\d{5})|((CH-)?\d{4})){1}$/;
     let emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    this.plzControl = new FormControl('', [Validators.required, Validators.pattern(zipcodePattern)]);
+    this.cityControl = new FormControl('', [Validators.required]);
     this.form = fb.group({
       "group": new FormControl('', [Validators.required]),
       "subgroup": new FormControl('', [Validators.required]),
@@ -32,8 +37,8 @@ export class RegistrationComponent implements OnInit {
       "lastname": new FormControl('', [Validators.required]),
       "street": new FormControl('', [Validators.required]),
       "streetNumber": new FormControl('', []),
-      "plz": new FormControl('', [Validators.required, Validators.pattern(zipcodePattern)]),
-      "city": new FormControl('', [Validators.required]),
+      "plz": this.plzControl,
+      "city": this.cityControl,
       "email": new FormControl('', [Validators.pattern(emailPattern)]),
       "phoneNumber": new FormControl('', [Validators.required]),
       "dateOfBirth": new FormControl('', [Validators.required, Validators.pattern(swissDatePattern)]),
@@ -42,6 +47,38 @@ export class RegistrationComponent implements OnInit {
       "notification": new FormControl('', [Validators.required]),
       "leader": new FormControl('', []),
     });
+
+    this.plzControl.valueChanges
+      .let(this.getPlzObservable)
+      .let((o) => this.getCityObservable(o, http))
+      .subscribe(city => this.cityControl.setValue(city));
+  }
+
+  private getPlzObservable(input: Observable<string>): Observable<string> {
+    return input
+      .filter(text => text.length > 3)
+      .filter(text => !text.startsWith("DE-"))
+      .map(text => (text.startsWith("CH-")) ? text.substr(4) : text)
+      .filter(text => text.length == 4);
+  }
+
+  private getCityObservable(input: Observable<string>, http: Http): Observable<string> {
+    return input
+      .map(text => `https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=zipcode&limit=2&searchText=${text}`)
+      .switchMap(url => http.get(url), (req, res) => res.json())
+      .filter(results => results.results.length > 0)
+      .map(results => results.results[0])
+      .filter(result => result.attrs)
+      .map(result => result.attrs)
+      .filter(attrs => attrs)
+      .map(attrs => attrs.label)
+      .map(RegistrationComponent.extractCity)
+      .filter(city => city.length > 0);
+  }
+
+  private static extractCity(label: any): string {
+    let results = /^<b>[0-9]{4} - (.*) \([A-Z]{2}\)<\/b>$/g.exec(label);
+    return (results && results.length > 0) ? results[1] : "";
   }
 
   ngOnInit() {
