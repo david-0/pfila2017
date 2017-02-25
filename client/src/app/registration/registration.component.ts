@@ -2,10 +2,11 @@ import {Component, OnInit} from "@angular/core";
 import {Validators, FormControl, FormGroup, FormBuilder} from "@angular/forms";
 import {ClientSocketService} from "../remote/client-socket.service";
 import {Router} from "@angular/router";
-import {GenericService} from "../remote/generic.service";
-import {AuthHttp} from "angular2-jwt";
 import {IPerson} from "../../../../server/entities/person.interface";
 import {IGroup} from "../../../../server/entities/group.interface";
+import {Http} from "@angular/http";
+import {GenericRestService} from "../remote/generic-rest.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-registration',
@@ -16,9 +17,11 @@ export class RegistrationComponent implements OnInit {
 
   private form: FormGroup;
   private groups: IGroup[];
-  private genericService: GenericService<IPerson>;
+  private restService: GenericRestService<IPerson>;
+  private busy: Subscription;
 
-  constructor(fb: FormBuilder, private router: Router, private socketService: ClientSocketService, private authHttp: AuthHttp) {
+  constructor(private fb: FormBuilder, private router: Router, private socketService: ClientSocketService,
+              private http: Http) {
     let swissDatePattern = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
     let zipcodePattern = /^((DE-\d{5})|((CH-)?\d{4})){1}$/;
     let emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -54,8 +57,7 @@ export class RegistrationComponent implements OnInit {
 
     this.groups = [groupRothenfluh, groupLausen, groupUnknown];
 
-    this.genericService = new GenericService<IPerson>(this.authHttp,
-      this.socketService, "/api/persons", "/persons");
+    this.restService = new GenericRestService<IPerson>(this.http, "/api/persons");
   }
 
   private resetSubgroup(event: any) {
@@ -65,7 +67,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   private save(data: any, valid: boolean) {
-    let person: IPerson = {id: data.id,
+    let person: IPerson = {
+      id: data.id,
       firstname: data.firstname,
       lastname: data.lastname,
       street: data.street,
@@ -78,18 +81,23 @@ export class RegistrationComponent implements OnInit {
       allergies: data.allergies,
       comments: data.comments,
       subgroupId: data.subgroup.id,
-      leader: data.leader,
-    }
+      leader: !!data.leader,
+    };
     console.log(person);
     person.createDate = new Date();
     // write to DB
-    this.genericService.create(person);
-    alert("Danke für die Anmeldung");
-    this.form.reset();
+    this.busy = this.restService.add(person).subscribe((person: IPerson) => {
+      this.router.navigate(["confirmation", person.id]);
+    }, (err: any) => {
+      this.router.navigate(["error"]);
+    });
   }
 
   private reset() {
     this.form.reset();
   }
 
+  openDialog() {
+
+  }
 }

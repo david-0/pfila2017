@@ -1,5 +1,5 @@
 <h2 class="h2-element">Anmeldung</h2>
-<form class="form" [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)">
+<form class="form" [formGroup]="form" novalidate>
   <section class="section">
     <div class="select-container">
       <md-select placeholder="Ortsgruppe" formControlName="group" class="example-section-left"
@@ -107,6 +107,7 @@
   <div class="button-row">
     <button md-button class="grayButton" (click)="reset()">Reset</button>
     <span class="fill-remaining-space"></span>
-    <button md-button type="submit" [disabled]="!form.valid" class="grayButton">Anmelden</button>
+    <button md-button (click)="save(form.value, form.valid)" [disabled]="!form.valid" class="grayButton">Anmelden</button>
   </div>
 </form>
+<div [ngBusy]="{busy: busy, message: 'Anmeldung wird verarbeiet...', delay: 200, minDuration: 600}"></div>

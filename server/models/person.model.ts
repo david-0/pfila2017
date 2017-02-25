@@ -6,10 +6,11 @@ export interface IPersonDocument extends IPerson, Document {
 
 let PersonSchema = new Schema({
   id: String,
+  createDate: {type: Date, required: true},
   firstname: {type: String, required: true},
   lastname: {type: String, required: true},
   street: {type: String, required: true},
-  streetNumber: {type: String, required: true},
+  streetNumber: {type: String, required: false},
   plz: {type: String, required: true},
   city: {type: String, required: true},
   email: {type: String, required: false},

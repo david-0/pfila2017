@@ -4,6 +4,7 @@ import {HomeComponent} from "./home/home.component";
 import {InfoComponent} from './info/info.component';
 import {TeamComponent} from './team/team.component';
 import {RegistrationComponent} from './registration/registration.component';
+import {ConfirmationComponent} from "./confirmation/confirmation.component";
 
 
 const routes: Routes = [
@@ -12,8 +13,8 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'info', component: InfoComponent},
   {path: 'registration', component: RegistrationComponent},
+  {path: 'confirmation/:id', component: ConfirmationComponent},
   {path: 'team', component: TeamComponent},
-//  {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent},
 ]
 
 @NgModule({

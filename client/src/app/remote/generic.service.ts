@@ -2,9 +2,9 @@ import {ReplaySubject, Subscription} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
 import {List} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
-import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
 import {GenericRestService} from "./generic-rest.service";
+import {MyHttpInterface} from "./my-http.interface";
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
@@ -12,9 +12,9 @@ export class GenericService<T extends IId> {
   private dataSubscription: Subscription;
   private restService: GenericRestService<T>;
 
-  constructor(private authHttp: AuthHttp, private socketService: ClientSocketService,
+  constructor(private myHttp: MyHttpInterface, private socketService: ClientSocketService,
               private restUrl: string, private socketNamespace: string) {
-    this.restService = new GenericRestService<T>(authHttp, restUrl);
+    this.restService = new GenericRestService<T>(myHttp, restUrl);
     let observable = socketService.get(socketNamespace);
     this.dataSubscription = observable.subscribe((item: ISocketItem) => this.processItem(item));
   }

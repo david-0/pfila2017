@@ -1,0 +1,9 @@
+<div *ngIf="person">
+  <h2>Danke für die Anmeldung</h2>
+  <p>
+    Die Anmeldung von {{person.firstname}} {{person.lastname}} wurde erfolgreich gespeichert.
+  </p>
+</div>
+<p>
+  Zurück zur <a [routerLink]="['/home']">Hauptseite</a> oder zur <a [routerLink]="['/registration']">Anmeldung</a>.
+</p>

@@ -6,7 +6,7 @@ export interface IPerson extends IId {
   firstname: string;
   lastname: string;
   street: string;
-  streetNumber: string;
+  streetNumber?: string;
   plz: string;
   city: string;
   email?: string;

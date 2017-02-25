@@ -23,6 +23,7 @@
     "@angular/router": "^3.4.0",
     "@angular2-material/icon": "^2.0.0-alpha.8-2",
     "@types/socket.io-client": "^1.4.29",
+    "angular2-busy": "^1.0.2",
     "angular2-jwt": "^0.1.28",
     "core-js": "^2.4.1",
     "hammerjs": "^2.0.8",
