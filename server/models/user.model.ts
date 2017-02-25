@@ -22,8 +22,8 @@ let UserSchema = new Schema({
 export const UserModel: Model<IUserDocument> = model<IUserDocument>('User', UserSchema);
 
 export function initAdmin() {
-  let username: String = 'admin';
-  let selector = {'username': username};
+  let email: String = 'david.leuenberger@gmx.ch';
+  let selector = {'email': email};
   UserModel.find(selector, (err, users) => {
     if (users.length) {
       LOGGER.info(`admin user is ok. id = ${users[0]._id}`);
