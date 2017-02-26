@@ -3,15 +3,20 @@ import {CommonModule} from "@angular/common";
 import {AdminRouterModule} from "./router/admin-router.module";
 import {LoginComponent} from "./login/login.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
-import {ClientSocketService} from "./client-socket.service";
-import {AuthenticationService} from "./authentication.service";
+import {ClientSocketService} from "./services/client-socket.service";
+import {AuthenticationService} from "./services/authentication.service";
 import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {RequestOptions, Http} from "@angular/http";
-import {AuthGuard} from "./auth-guard.service";
+import {AuthGuard} from "./services/auth-guard.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MaterialModule} from "@angular/material";
 import {MySpinnerModule} from "../my-spinner/my-spinner.module";
-import { LogoutComponent } from './logout/logout.component';
+import {LogoutComponent} from "./logout/logout.component";
+import {AdminOrStandardGuard} from "./services/admin-or-standard-guard.service";
+import {UserAdminComponent} from "./user-admin/user-admin.component";
+import {GroupAdminComponent} from "./group-admin/group-admin.component";
+import {RegistrationAdminComponent} from "./registration-admin/registration-admin.component";
+import { PasswordChangeComponent } from './password-change/password-change.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -32,9 +37,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     DashboardComponent,
     LogoutComponent,
+    UserAdminComponent,
+    GroupAdminComponent,
+    RegistrationAdminComponent,
+    PasswordChangeComponent,
   ],
   providers: [
     AuthGuard,
+    AdminOrStandardGuard,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

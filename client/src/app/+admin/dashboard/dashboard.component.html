@@ -1,4 +1,10 @@
-<p>
-  dashboard works!
-</p>
-<a [routerLink]="['/admin/logout']">Logout</a>
+<md-toolbar color="primary">
+  <a [routerLink]="[{ outlets: { admin: ['users'] } }]">Users</a>
+  <a [routerLink]="[{ outlets: { admin: ['groups'] } }]">Groups</a>
+  <a [routerLink]="[{ outlets: { admin: ['registrations'] } }]">Anmeldungen</a>
+  <span class="example-spacer"></span>
+  <a [routerLink]="[{ outlets: { admin: ['change-password'] } }]">Password ändern</a>
+  <a [routerLink]="['/admin/logout']">Logout</a>
+</md-toolbar>
+<p>Administrationsbereich</p>
+<router-outlet name="admin"></router-outlet>

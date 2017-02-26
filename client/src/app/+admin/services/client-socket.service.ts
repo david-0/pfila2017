@@ -2,7 +2,7 @@ import {Injectable, Inject} from "@angular/core";
 import {Observable} from "rxjs";
 import * as io from "socket.io-client";
 import {AuthenticationService} from './authentication.service';
-import {ISocketItem} from "../../../../server/entities/socket-item.model";
+import {ISocketItem} from "../../../../../server/entities/socket-item.model";
 
 /**
  * This class handles authentication, error's, connect's and disconnect's from socket.io.
