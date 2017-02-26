@@ -14,9 +14,9 @@ import "hammerjs";
 import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {ClientSocketService} from "./remote/client-socket.service";
 import {AuthenticationService} from "./remote/authentication.service";
-import {BusyModule} from "angular2-busy";
 import {GlobalHttpOptions} from "./remote/GlobalHttpOptions";
 import {ConfirmationComponent} from "./confirmation/confirmation.component";
+import { MySpinnerComponent } from './my-spinner/my-spinner.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -33,6 +33,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HomeComponent,
     DebugPipe,
     ConfirmationComponent,
+    MySpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +42,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     MaterialModule,
     AppRouteModule,
-    BusyModule,
   ],
   providers: [
     {

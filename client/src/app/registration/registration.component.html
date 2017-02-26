@@ -113,4 +113,4 @@
     </button>
   </div>
 </form>
-<div [ngBusy]="{busy: busy, message: 'Anmeldung wird verarbeiet...', delay: 200, minDuration: 600}"></div>
+<app-my-spinner [isRunning]="busy" [delay]="150"></app-my-spinner>

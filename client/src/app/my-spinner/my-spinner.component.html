@@ -1,0 +1,8 @@
+<!--<div *ngIf="show" class="overlay"><md-spinner class="loading"></md-spinner></div>-->
+<!--<div [hidden]="!isDelayedRunning" class="spinner">
+  <div class="double-bounce1"></div>
+  <div class="double-bounce2"></div>
+</div>-->
+<div *ngIf="isDelayedRunning" class="overlay">
+  <md-spinner class="loading"></md-spinner>
+</div>
