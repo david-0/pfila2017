@@ -6,16 +6,15 @@ import {TeamComponent} from './team/team.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {ConfirmationComponent} from "./confirmation/confirmation.component";
 
-
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
-
   {path: 'home', component: HomeComponent},
   {path: 'info', component: InfoComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'confirmation/:id', component: ConfirmationComponent},
   {path: 'team', component: TeamComponent},
-]
+  {path: 'admin', loadChildren: 'app/+admin/admin.module#AdminModule'},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes),

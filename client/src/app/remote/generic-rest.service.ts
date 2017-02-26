@@ -1,5 +1,4 @@
-import {handleError} from './error-utils';
-import {AuthHttp} from 'angular2-jwt';
+import {handleError} from "./error-utils";
 import {Observable} from "rxjs";
 import {IId} from "../../../../server/entities/id.interface";
 import {MyHttpInterface} from "./my-http.interface";

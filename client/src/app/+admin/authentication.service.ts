@@ -4,14 +4,14 @@ import {Observable} from "rxjs";
 import "rxjs/add/operator/map";
 import {tokenNotExpired, JwtHelper} from "angular2-jwt";
 import {UserType} from "../user";
-import {handleError} from "./error-utils";
+import {handleError} from "../remote/error-utils";
 
 @Injectable()
 export class AuthenticationService {
   private static readonly tokenKey: string = 'id_token';
   private jwtHelper: JwtHelper = new JwtHelper();
   private headers = new Headers({'Content-Type': 'application/json'});
-  private username: string;
+  private email: string;
   private userId: any;
   private userType: UserType;
 
@@ -23,9 +23,10 @@ export class AuthenticationService {
     }
   }
 
-  login(username: string, password: string): Observable<boolean> {
+
+  login(email: string, password: string): Observable<boolean> {
     return this.http.post('/api/authenticate', JSON.stringify({
-      username: username,
+      email: email,
       password: password
     }), {headers: this.headers})
       .map((response: Response) => {
@@ -35,7 +36,7 @@ export class AuthenticationService {
           // store jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem(AuthenticationService.tokenKey, token);
           this.decodeToken(token);
-          console.log(`login succeeded. username: ${this.username}`);
+          console.log(`login succeeded. email: ${this.email}`);
           return true;
         } else {
           return false;
@@ -46,7 +47,7 @@ export class AuthenticationService {
 
   private decodeToken(token: string) {
     let decodedToken = this.jwtHelper.decodeToken(this.getToken());
-    this.username = decodedToken.username;
+    this.email = decodedToken.email;
     this.userId = decodedToken.id;
     this.userType = decodedToken.type;
   }
@@ -64,8 +65,8 @@ export class AuthenticationService {
     return localStorage.getItem('id_token');
   }
 
-  getLoggedInUsername(): string {
-    return this.loggedIn() ? this.username : null;
+  getLoggedInEmail(): string {
+    return this.loggedIn() ? this.email : null;
   }
 
   getLoggedInUserId(): any {

@@ -1,5 +1,3 @@
-'use strict';
-
 import {Logger, getLogger} from "../utils/logger";
 import {IUserDocument, UserModel} from "../models/user.model";
 import {IUser} from "../entities/user.interface";

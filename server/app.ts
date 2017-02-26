@@ -11,6 +11,7 @@ import * as socketIo from "socket.io";
 import {GenericRouter} from "./routes/generic.router";
 import {SocketService} from "./socket/socket-service";
 import {PersonController} from "./controllers/person.controller";
+import {authenticationRoute} from './routes/authentication';
 
 const LOGGER: Logger = getLogger('Server');
 
@@ -83,7 +84,7 @@ class Server {
     });
 
     this.app.use('/api/persons', GenericRouter.create(new PersonController(this.socketService)));
-//    this.app.use(authenticationRoute);
+    this.app.use(authenticationRoute);
 //    this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {

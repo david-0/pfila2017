@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Validators, FormControl, FormGroup, FormBuilder} from "@angular/forms";
-import {ClientSocketService} from "../remote/client-socket.service";
+import {ClientSocketService} from "../+admin/client-socket.service";
 import {Router} from "@angular/router";
 import {IPerson} from "../../../../server/entities/person.interface";
 import {IGroup} from "../../../../server/entities/group.interface";

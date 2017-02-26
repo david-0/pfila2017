@@ -1,5 +1,5 @@
 import {ReplaySubject, Subscription} from "rxjs";
-import {ClientSocketService} from "./client-socket.service";
+import {ClientSocketService} from "../+admin/client-socket.service";
 import {List} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
