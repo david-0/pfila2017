@@ -1,4 +1,5 @@
 import {Component, Input, OnDestroy} from "@angular/core";
+import Timer = NodeJS.Timer;
 
 @Component({
   selector: 'app-my-spinner',
@@ -7,7 +8,7 @@ import {Component, Input, OnDestroy} from "@angular/core";
 })
 export class MySpinnerComponent implements OnDestroy {
 
-  private currentTimeout: number;
+  private currentTimeout: Timer;
   private isDelayedRunning: boolean = false;
 
   @Input()
