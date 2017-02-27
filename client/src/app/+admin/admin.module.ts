@@ -18,6 +18,8 @@ import {GroupAdminComponent} from "./group-admin/group-admin.component";
 import {RegistrationAdminComponent} from "./registration-admin/registration-admin.component";
 import { PasswordChangeComponent } from './password-change/password-change.component';
 import { PasswordChangeConfirmationComponent } from './password-change-confirmation/password-change-confirmation.component';
+import {EqualValidator} from "./password-change/equals-validator.directives";
+import { ValidatorsModule } from 'ng2-validators';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -33,6 +35,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MaterialModule,
     AdminRouterModule,
     MySpinnerModule,
+    ValidatorsModule,
   ],
   declarations: [
     LoginComponent,
@@ -43,6 +46,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RegistrationAdminComponent,
     PasswordChangeComponent,
     PasswordChangeConfirmationComponent,
+    EqualValidator,
   ],
   providers: [
     AuthGuard,
@@ -58,3 +62,5 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 })
 export class AdminModule {
 }
+
+

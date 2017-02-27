@@ -5,11 +5,12 @@ import {AuthenticationService} from "../services/authentication.service";
 import {GenericRestService} from "../../remote/generic-rest.service";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {AuthHttp} from "angular2-jwt";
+import {EqualValidator} from "./equals-validator.directives";
 
 @Component({
   selector: 'app-password-change',
   templateUrl: './password-change.component.html',
-  styleUrls: ['./password-change.component.scss']
+  styleUrls: ['./password-change.component.scss'],
 })
 export class PasswordChangeComponent implements OnInit {
   private message: string;
