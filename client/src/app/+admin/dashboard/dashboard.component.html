@@ -1,10 +1,9 @@
-<md-toolbar color="primary">
-  <a [routerLink]="[{ outlets: { admin: ['users'] } }]">Users</a>
-  <a [routerLink]="[{ outlets: { admin: ['groups'] } }]">Groups</a>
-  <a [routerLink]="[{ outlets: { admin: ['registrations'] } }]">Anmeldungen</a>
-  <span class="example-spacer"></span>
-  <a [routerLink]="[{ outlets: { admin: ['change-password'] } }]">Password ändern</a>
-  <a [routerLink]="['/admin/logout']">Logout</a>
-</md-toolbar>
+<div color="primary" class="admin-container">
+  <button md-button class="button" [routerLink]="[{ outlets: { admin: ['users'] } }]">Users</button>
+  <button md-button class="button" [routerLink]="[{ outlets: { admin: ['groups'] } }]">Groups</button>
+  <button md-button class="button" [routerLink]="[{ outlets: { admin: ['registrations'] } }]">Anmeldungen</button>
+  <button md-button class="button" [routerLink]="[{ outlets: { admin: ['change-password'] } }]">Password ändern</button>
+  <button md-button class="button" [routerLink]="['/admin/logout']">Logout</button>
+</div>
 <p>Administrationsbereich</p>
 <router-outlet name="admin"></router-outlet>
