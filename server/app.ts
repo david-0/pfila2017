@@ -12,6 +12,8 @@ import {GenericRouter} from "./routes/generic.router";
 import {SocketService} from "./socket/socket-service";
 import {PersonController} from "./controllers/person.controller";
 import {authenticationRoute} from './routes/authentication';
+import {requiresStandardOrAdmin} from "./routes/authorization";
+import {UserController} from "./controllers/user.controller";
 
 const LOGGER: Logger = getLogger('Server');
 
@@ -85,7 +87,7 @@ class Server {
 
     this.app.use('/api/persons', GenericRouter.create(new PersonController(this.socketService)));
     this.app.use(authenticationRoute);
-//    this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
+    this.app.use('/api/users', requiresStandardOrAdmin, GenericRouter.create(new UserController(this.socketService)));
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
       next(createError(404, `No route found for ${req.method} ${req.url}`));

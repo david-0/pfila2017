@@ -8,11 +8,12 @@
         <md-hint *ngIf="!form.controls.email.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
         </md-hint>
       </md-input-container>
-      <md-input-container class="full-width">
+      <md-input-container class="full-width exampleClass">
         <input mdInput placeholder="Passwort" formControlName="password" type="password">
         <md-hint *ngIf="!form.controls.password.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
       </md-input-container>
     </section>
+    <p>{{message}}</p>
     <div class="button-row">
       <span class="fill-remaining-space"></span>
       <button md-button (click)="doLogin(form.value, form.valid)" [disabled]="!form.valid" class="grayButton">Login

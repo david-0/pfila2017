@@ -22,7 +22,8 @@ export class RegistrationComponent implements OnInit {
   private plzControl: FormControl;
   private cityControl: FormControl;
 
-  constructor(private fb: FormBuilder, private router: Router, private socketService: ClientSocketService,
+  constructor(private fb: FormBuilder,
+              private router: Router,
               private http: Http) {
     let swissDatePattern = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
     let zipcodePattern = /^((DE-\d{5})|((CH-)?\d{4})){1}$/;
