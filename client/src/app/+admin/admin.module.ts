@@ -17,6 +17,7 @@ import {UserAdminComponent} from "./user-admin/user-admin.component";
 import {GroupAdminComponent} from "./group-admin/group-admin.component";
 import {RegistrationAdminComponent} from "./registration-admin/registration-admin.component";
 import { PasswordChangeComponent } from './password-change/password-change.component';
+import { PasswordChangeConfirmationComponent } from './password-change-confirmation/password-change-confirmation.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -41,6 +42,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     GroupAdminComponent,
     RegistrationAdminComponent,
     PasswordChangeComponent,
+    PasswordChangeConfirmationComponent,
   ],
   providers: [
     AuthGuard,

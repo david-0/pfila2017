@@ -20,11 +20,11 @@ export class PasswordChangeComponent implements OnInit {
               private http: AuthHttp) {
   }
 
-  private changePassword(data: any, form: FormGroup,): void {
+  private changePassword(data: any): void {
     this.authenticationService.loginCheckonly(this.authenticationService.getLoggedInEmail(), data.currentPassword)
       .subscribe(result => {
         if (result === true) {
-          this.updatePassword(data.password, form);
+          this.updatePassword(data.password);
         } else {
           this.message = 'Ungültige Anwort vom Server. Interner Server-Fehler.';
         }
@@ -33,14 +33,12 @@ export class PasswordChangeComponent implements OnInit {
       });
   }
 
-  private updatePassword(password: string, form: FormGroup) {
+  private updatePassword(password: string) {
     this.restService.get(this.authenticationService.getLoggedInUserId()).subscribe(
       user => {
         user.password = password;
         this.restService.update(user).subscribe(user => {
-          this.message = 'Passwort geändert';
-          form.reset();
-          setTimeout(() => this.router.navigate(['/admin/dashboard']), 2000);
+          this.router.navigate(['/admin/dashboard', {outlets: {admin: ['password-confirmation']}}]);
         }, error => {
           this.message = `Fehler beim Passwot ändern (${error})`;
         });

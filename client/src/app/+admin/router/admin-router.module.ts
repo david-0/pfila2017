@@ -8,6 +8,7 @@ import {UserAdminComponent} from "../user-admin/user-admin.component";
 import {GroupAdminComponent} from "../group-admin/group-admin.component";
 import {RegistrationAdminComponent} from "../registration-admin/registration-admin.component";
 import {PasswordChangeComponent} from "../password-change/password-change.component";
+import {PasswordChangeConfirmationComponent} from "../password-change-confirmation/password-change-confirmation.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -17,6 +18,12 @@ const routes: Routes = [
     {path: 'groups', component: GroupAdminComponent, outlet: 'admin'},
     {path: 'registrations', component: RegistrationAdminComponent, outlet: 'admin'},
     {path: 'change-password', canActivate: [AuthGuard], component: PasswordChangeComponent, outlet: 'admin'},
+    {
+      path: 'password-confirmation',
+      canActivate: [AuthGuard],
+      component: PasswordChangeConfirmationComponent,
+      outlet: 'admin'
+    },
     {path: '', redirectTo: 'users', pathMatch: 'full', outlet: 'admin'},
   ]
   },
