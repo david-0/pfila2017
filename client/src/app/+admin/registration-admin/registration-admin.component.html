@@ -12,12 +12,13 @@
     <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['changePerson'] } }]">
       <md-icon>edit</md-icon>
       <span class="size-xl">ändern</span></button>
-    <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['deletePerson'] } }]">
-      <md-icon>delete</md-icon>
-      <span class="size-xl">löschen</span></button>
     <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['detailPerson'] } }]">
       <md-icon>details</md-icon>
       <span class="size-xl">Details</span></button>
+    <button md-button *ngIf="authenticationService.isAdmin()" class="grayButton"
+            [routerLink]="[{ outlets: { admin: ['deletePerson'] } }]">
+      <md-icon>delete</md-icon>
+      <span class="size-xl">löschen</span></button>
     <span class="span__gray">{{person.firstname}} {{person.lastname}}, {{person.city}}</span>
   </div>
 </div>

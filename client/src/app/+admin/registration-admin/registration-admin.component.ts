@@ -4,6 +4,7 @@ import {IPerson} from "../../../../../server/entities/person.interface";
 import {ClientSocketService} from "../services/client-socket.service";
 import {AuthHttp} from "../../../../../../pfila2017/client/node_modules/angular2-jwt/angular2-jwt";
 import {OnDestroy} from "../../../../../../pfila2017/client/node_modules/@angular/core/src/metadata/lifecycle_hooks";
+import {AuthenticationService} from "../services/authentication.service";
 
 @Component({
   selector: 'app-registration-admin',
@@ -14,7 +15,9 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
 
   private dataService: GenericService<IPerson>;
 
-  constructor(private http: AuthHttp, private socketService: ClientSocketService) {
+  constructor(private http: AuthHttp,
+              private socketService: ClientSocketService,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
