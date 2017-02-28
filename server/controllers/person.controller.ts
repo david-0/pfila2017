@@ -10,7 +10,7 @@ import {IPersonDocument, PersonModel} from "../models/person.model";
 export class PersonController extends GenericController<IPerson, IPersonDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      "/persons",
+      "/api/persons",
       PersonModel,
       c => new PersonModel(c),
       (d, i) => PersonController.updateDocument(d, i),

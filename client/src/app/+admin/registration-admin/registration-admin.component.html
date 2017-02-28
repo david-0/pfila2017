@@ -1,3 +1,33 @@
-<p>
-  registration-admin works!
-</p>
+<div class="registration-container">
+  <h3>Anmeldungen</h3>
+  <!--  <div class="table">
+      <md-select placeholder="Gruppenfilter" name="filter" class="topborder"
+                 (ngModelChange)="resetSubgroup($event)">
+        <md-option *ngFor="let group of groups" [value]="group">
+          {{group.name }}
+        </md-option>
+      </md-select>-->
+
+  <table>
+    <tr>
+      <th>Vornamen</th>
+      <th>Nachname</th>
+      <!--      <th>Strasse</th>
+            <th>Nummer</th>
+            <th>PLZ</th>-->
+      <th>Ort</th>
+      <th>Anmeldedatum</th>
+      <!--      <th>Geburtsdatum</th>-->
+    </tr>
+    <tr *ngFor="let person of dataService.items | async">
+      <td>{{person.firstname}}</td>
+      <td>{{person.lastname}}</td>
+      <!--      <td>{{person.street}}</td>
+            <td>{{person.streetNumber}}</td>
+            <td>{{person.plz}}</td>-->
+      <td>{{person.city}}</td>
+      <td>{{person.createDate | date}}</td>
+      <!--            <td>{{person.dateOfBirth}}</td>-->
+    </tr>
+  </table>
+</div>
