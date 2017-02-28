@@ -3,7 +3,7 @@ import {MdDialogRef} from "@angular/material";
 
 @Component({
   selector: 'confirmation-dialog',
-  templateUrl: 'confirmation-dialog.html',
+  templateUrl: 'confirmation-dialog.component.html',
 })
 export class ConfirmationDialogComponent {
   message: string;

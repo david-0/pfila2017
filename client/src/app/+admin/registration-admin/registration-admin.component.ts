@@ -7,6 +7,7 @@ import {AuthenticationService} from "../services/authentication.service";
 import {MdDialog} from "@angular/material";
 import {Router} from "@angular/router";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {GenericRestService} from "../../remote/generic-rest.service";
 
 @Component({
   selector: 'app-registration-admin',
@@ -15,6 +16,7 @@ import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-d
 })
 export class RegistrationAdminComponent implements OnInit, OnDestroy {
   private dataService: GenericService<IPerson>;
+  private restService: GenericRestService<IPerson>;
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
@@ -28,7 +30,7 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.message = `${firstname} ${lastname} löschen? `;
     dialogRef.afterClosed().subscribe(result => {
       if (result === "Ja") {
-        this.router.navigate([{outlets: {admin: ['deletePerson', id]}}]);
+        this.restService.del(id).subscribe().unsubscribe();
       }
     });
   }
@@ -36,6 +38,7 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dataService = new GenericService<IPerson>(this.http, this.socketService, "/api/persons", "/api/persons");
     this.dataService.getAll();
+    this.restService = new GenericRestService<IPerson>(this.http, "/api/persons");
   }
 
   ngOnDestroy() {

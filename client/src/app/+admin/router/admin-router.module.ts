@@ -24,7 +24,7 @@ const routes: Routes = [
       component: PasswordChangeConfirmationComponent,
       outlet: 'admin'
     },
-    {path: '', redirectTo: 'users', pathMatch: 'full', outlet: 'admin'},
+    {path: '', redirectTo: 'registrations', pathMatch: 'full', outlet: 'admin'},
   ]
   },
   {path: 'login', component: LoginComponent},
