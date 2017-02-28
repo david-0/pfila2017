@@ -18,7 +18,7 @@
   margin: 0.2em;
   flex: 1 1 auto;
   height: 1em;
-  min-width: 200px;
+  min-width: 180px;
 }
 
 .line {
@@ -27,7 +27,7 @@
   align-items: baseline;
 }
 
-@media (max-width: 650px)  {
+@media (max-width: 600px)  {
   .size-xl {
     display: none;
   }
