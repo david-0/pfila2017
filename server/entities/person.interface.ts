@@ -14,6 +14,7 @@ export interface IPerson extends IId {
   dateOfBirth: string;
   allergies?: string;
   comments?: string;
+  notification: string;
   subgroupId: string;
   leader: boolean;
 }

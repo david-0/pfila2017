@@ -18,6 +18,7 @@ let PersonSchema = new Schema({
   dateOfBirth: {type: String, required: true},
   allergies: {type: String, required: false},
   comments: {type: String, required: false},
+  notification: {type: String, required: true},
   subgroupId: {type: String, required: true, index: true},
   leader: {type: Boolean, required: true},
 }, {

@@ -30,6 +30,7 @@ export class PersonController extends GenericController<IPerson, IPersonDocument
     documentFromDb.dateOfBirth = inputDocument.dateOfBirth;
     documentFromDb.allergies = inputDocument.allergies;
     documentFromDb.comments = inputDocument.comments;
+    documentFromDb.notification = inputDocument.notification;
     documentFromDb.subgroupId = inputDocument.subgroupId;
     documentFromDb.leader = inputDocument.leader;
   }
