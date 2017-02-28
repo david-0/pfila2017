@@ -15,8 +15,7 @@
     <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['detailPerson'] } }]">
       <md-icon>details</md-icon>
       <span class="size-xl">Details</span></button>
-    <button md-button *ngIf="authenticationService.isAdmin()" class="grayButton"
-            [routerLink]="[{ outlets: { admin: ['deletePerson'] } }]">
+    <button md-button *ngIf="authenticationService.isAdmin()" class="grayButton" (click)="openDialog(person.id, person.firstname, person.lastname)">
       <md-icon>delete</md-icon>
       <span class="size-xl">löschen</span></button>
     <span class="span__gray">{{person.firstname}} {{person.lastname}}, {{person.city}}</span>

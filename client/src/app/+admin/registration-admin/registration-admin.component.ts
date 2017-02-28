@@ -1,10 +1,12 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {GenericService} from "../../remote/generic.service";
 import {IPerson} from "../../../../../server/entities/person.interface";
 import {ClientSocketService} from "../services/client-socket.service";
-import {AuthHttp} from "../../../../../../pfila2017/client/node_modules/angular2-jwt/angular2-jwt";
-import {OnDestroy} from "../../../../../../pfila2017/client/node_modules/@angular/core/src/metadata/lifecycle_hooks";
+import {AuthHttp} from "angular2-jwt";
 import {AuthenticationService} from "../services/authentication.service";
+import {MdDialog} from "@angular/material";
+import {Router} from "@angular/router";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-registration-admin',
@@ -12,12 +14,23 @@ import {AuthenticationService} from "../services/authentication.service";
   styleUrls: ['./registration-admin.component.scss']
 })
 export class RegistrationAdminComponent implements OnInit, OnDestroy {
-
   private dataService: GenericService<IPerson>;
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              public dialog: MdDialog,
+              private router: Router) {
+  }
+
+  openDialog(id: string, firstname: string, lastname: string) {
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.componentInstance.message = `${firstname} ${lastname} löschen? `;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === "Ja") {
+        this.router.navigate([{outlets: {admin: ['deletePerson']}}]);
+      }
+    });
   }
 
   ngOnInit() {
@@ -28,5 +41,6 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.dataService.disconnect();
   }
-
 }
+
+
