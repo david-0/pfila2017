@@ -28,7 +28,7 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.message = `${firstname} ${lastname} löschen? `;
     dialogRef.afterClosed().subscribe(result => {
       if (result === "Ja") {
-        this.router.navigate([{outlets: {admin: ['deletePerson']}}]);
+        this.router.navigate([{outlets: {admin: ['deletePerson', id]}}]);
       }
     });
   }
