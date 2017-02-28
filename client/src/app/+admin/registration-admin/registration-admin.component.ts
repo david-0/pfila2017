@@ -17,6 +17,7 @@ import {GenericRestService} from "../../remote/generic-rest.service";
 export class RegistrationAdminComponent implements OnInit, OnDestroy {
   private dataService: GenericService<IPerson>;
   private restService: GenericRestService<IPerson>;
+  private selectedPerson: IPerson;
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
@@ -43,6 +44,14 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dataService.disconnect();
+  }
+
+  private showDetails(person: IPerson) {
+    this.selectedPerson = person;
+  }
+
+  private hideDetails() {
+    this.selectedPerson = null;
   }
 }
 

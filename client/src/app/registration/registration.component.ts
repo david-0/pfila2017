@@ -118,6 +118,7 @@ export class RegistrationComponent implements OnInit {
       dateOfBirth: data.dateOfBirth,
       allergies: data.allergies,
       comments: data.comments,
+      notification: data.notification,
       subgroupId: data.subgroup.id,
       leader: !!data.leader,
     };

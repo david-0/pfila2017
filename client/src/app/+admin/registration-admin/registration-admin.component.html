@@ -1,23 +1,48 @@
-<div class="registration-container">
-  <h3>Anmeldungen</h3>
-  <!--  <div class="table">
-      <md-select placeholder="Gruppenfilter" name="filter" class="topborder"
-                 (ngModelChange)="resetSubgroup($event)">
-        <md-option *ngFor="let group of groups" [value]="group">
-          {{group.name }}
-        </md-option>
-      </md-select>-->
+<div *ngIf="!selectedPerson">
+  <div class="div__header">
+    <h3 class="h3__small-margins">Anmeldungen</h3>
+    <span class="fill-remaining-space"></span>
+    <a href="/export.pdf">Export</a>
+  </div>
+  <div class="registration-container">
+    <!--  <div class="table">
+        <md-select placeholder="Gruppenfilter" name="filter" class="topborder"
+                   (ngModelChange)="resetSubgroup($event)">
+          <md-option *ngFor="let group of groups" [value]="group">
+            {{group.name }}
+          </md-option>
+        </md-select>-->
 
-  <div class="line" *ngFor="let person of dataService.items | async">
-    <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['changePerson'] } }]">
-      <md-icon>edit</md-icon>
-      <span class="size-xl">ändern</span></button>
-    <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['detailPerson'] } }]">
-      <md-icon>details</md-icon>
-      <span class="size-xl">Details</span></button>
-    <button md-button *ngIf="authenticationService.isAdmin()" class="grayButton" (click)="openDialog(person.id, person.firstname, person.lastname)">
-      <md-icon>delete</md-icon>
-      <span class="size-xl">löschen</span></button>
-    <span class="span__gray">{{person.firstname}} {{person.lastname}}, {{person.city}}</span>
+    <div class="line" *ngFor="let person of dataService.items | async">
+      <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['changePerson'] } }]">
+        <md-icon>edit</md-icon>
+        <span class="size-xl">ändern</span></button>
+      <button md-button class="grayButton" (click)="showDetails(person)">
+        <md-icon>details</md-icon>
+        <span class="size-xl">Details</span></button>
+      <button md-button *ngIf="authenticationService.isAdmin()" class="grayButton"
+              (click)="openDialog(person.id, person.firstname, person.lastname)">
+        <md-icon>delete</md-icon>
+        <span class="size-xl">löschen</span></button>
+      <span class="span__gray">{{person.firstname}} {{person.lastname}}, {{person.city}}</span>
+    </div>
+  </div>
+</div>
+<div *ngIf="selectedPerson">
+  <div class="div__header" (click)="hideDetails()">
+    <md-icon class="icon--rightpad">arrow_back</md-icon>
+    <h3 class="h3__small-margins">Details</h3>
+  </div>
+  <div class="details-container">
+    <p class="p__small-margin">Name: {{selectedPerson.firstname}} {{selectedPerson.lastname}}</p>
+    <p class="p__small-margin">Adresse: {{selectedPerson.street}} {{selectedPerson.streetNumber}}</p>
+    <p class="p__small-margin">Ort: {{selectedPerson.plz}} {{selectedPerson.city}}</p>
+    <p class="p__small-margin">E-Mail: {{selectedPerson.email}}</p>
+    <p class="p__small-margin">Telefonnummer: {{selectedPerson.phoneNumber}}</p>
+    <p class="p__small-margin">Geburtsdatum: {{selectedPerson.dateOfBirth}}</p>
+    <p class="p__small-margin">Allergien / Diät: {{selectedPerson.allergies}}</p>
+    <p class="p__small-margin">Bemerkungen: {{selectedPerson.comments}}</p>
+    <p class="p__small-margin">Infos per: {{selectedPerson.notification}}</p>
+    <p class="p__small-margin" *ngIf="selectedPerson.leader">Leiter: Ja</p>
   </div>
 </div>
