@@ -8,26 +8,16 @@
         </md-option>
       </md-select>-->
 
-  <table>
-    <tr>
-      <th>Vornamen</th>
-      <th>Nachname</th>
-      <!--      <th>Strasse</th>
-            <th>Nummer</th>
-            <th>PLZ</th>-->
-      <th>Ort</th>
-      <th>Anmeldedatum</th>
-      <!--      <th>Geburtsdatum</th>-->
-    </tr>
-    <tr *ngFor="let person of dataService.items | async">
-      <td>{{person.firstname}}</td>
-      <td>{{person.lastname}}</td>
-      <!--      <td>{{person.street}}</td>
-            <td>{{person.streetNumber}}</td>
-            <td>{{person.plz}}</td>-->
-      <td>{{person.city}}</td>
-      <td>{{person.createDate | date}}</td>
-      <!--            <td>{{person.dateOfBirth}}</td>-->
-    </tr>
-  </table>
+  <div class="line" *ngFor="let person of dataService.items | async">
+    <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['changePerson'] } }]">
+      <md-icon>edit</md-icon>
+      <span class="size-xl">ändern</span></button>
+    <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['deletePerson'] } }]">
+      <md-icon>delete</md-icon>
+      <span class="size-xl">löschen</span></button>
+    <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['detailPerson'] } }]">
+      <md-icon>details</md-icon>
+      <span class="size-xl">Details</span></button>
+    <span class="span__gray">{{person.firstname}} {{person.lastname}}, {{person.city}}</span>
+  </div>
 </div>

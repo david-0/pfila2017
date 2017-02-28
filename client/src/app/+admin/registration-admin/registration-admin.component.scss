@@ -1,4 +1,36 @@
 .registration-container {
-  max-width: 500px;
+  max-width: 700px;
   margin: 0.5em;
 }
+
+.grayButton {
+  background: #A6BAC5;
+  min-width: 10px;
+  margin: 0.2em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.span__gray {
+  background: #DDDDDD;
+  border-radius: 4px;
+  padding: 0.5em;
+  margin: 0.2em;
+  flex: 1 1 auto;
+  height: 1em;
+  min-width: 200px;
+}
+
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+@media (max-width: 650px)  {
+  .size-xl {
+    display: none;
+  }
+}
+
+
