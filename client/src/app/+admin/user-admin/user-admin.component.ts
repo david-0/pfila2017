@@ -22,7 +22,6 @@ export class UserAdminComponent implements OnInit, OnDestroy {
   private user: IUser;
   private detailHeader: string;
   private userTypes: any[];
-  private ts: string[];
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
@@ -71,26 +70,26 @@ export class UserAdminComponent implements OnInit, OnDestroy {
 
   private createUser() {
     this.user = {firstname: "", lastname: "", type: UserType.GUEST, email: "", password: ""};
-    this.detailHeader = "Benutzer Erstellen";
+    this.detailHeader = "Benutzer erstellen";
     this.userDialog = true;
   }
 
-  private save(user: IUser) {
+  private saveUser(user: IUser) {
     if (this.user.id) {
+      user.id = this.user.id;
       this.updateUser(user);
     } else {
-      this.saveUser(user);
+      this.addUser(user);
     }
   }
 
   private updateUser(user: IUser) {
-    user.id = this.user.id;
     this.restService.update(user).subscribe();
     this.user = null;
     this.userDialog = false;
   }
 
-  private saveUser(user: IUser) {
+  private addUser(user: IUser) {
     this.restService.add(user).subscribe();
     this.userDialog = false;
   }

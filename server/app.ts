@@ -14,6 +14,8 @@ import {PersonController} from "./controllers/person.controller";
 import {authenticationRoute} from './routes/authentication';
 import {requiresStandardOrAdmin} from "./routes/authorization";
 import {UserController} from "./controllers/user.controller";
+import {GroupController} from "./controllers/group.controller";
+import {SubgroupController} from "./controllers/subgroup.controller";
 
 const LOGGER: Logger = getLogger('Server');
 
@@ -86,6 +88,8 @@ class Server {
     });
 
     this.app.use('/api/persons', GenericRouter.create(new PersonController(this.socketService)));
+    this.app.use('/api/groups', GenericRouter.create(new GroupController(this.socketService)));
+    this.app.use('/api/subgroups', GenericRouter.create(new SubgroupController(this.socketService)));
     this.app.use(authenticationRoute);
     this.app.use('/api/users', requiresStandardOrAdmin, GenericRouter.create(new UserController(this.socketService)));
 

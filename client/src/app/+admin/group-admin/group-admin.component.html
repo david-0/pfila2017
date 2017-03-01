@@ -1,3 +1,116 @@
-<p>
-  group-admin works!
-</p>
+<div *ngIf="!groupEditOpen && !subgroupEditOpen" div class="group-subgroup-container">
+  <div class="grow">
+    <div class="div__header">
+      <h3 class="h3__small-margins">Ortsgruppen</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button class="grayButton" (click)="createGroup()">
+        <md-icon>add</md-icon>
+        <span class="size-xl">erstellen</span></button>
+    </div>
+    <div class="group-container">
+      <div class="line" *ngFor="let group of groupDataService.items | async">
+        <button md-button class="grayButton" (click)="editGroup(group)">
+          <md-icon>edit</md-icon>
+          <span class="size-xl">ändern</span></button>
+        <button md-button class="grayButton"
+                (click)="openGroupDialog(group.id, group.name)">
+          <md-icon>delete</md-icon>
+          <span class="size-xl">löschen</span></button>
+        <span
+          class="span__gray" (click)="showGroupDetails(group)">{{group.name}}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="selectedGroup" class="grow">
+    <div class="div__header">
+      <h3 class="h3__small-margins">Gruppen in {{selectedGroup.name}}</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button class="grayButton" (click)="createSubroup()">
+        <md-icon>add</md-icon>
+        <span class="size-xl">erstellen</span></button>
+    </div>
+    <div class="group-container">
+      <div class="line" *ngFor="let subgroup of filteredSubgroups | async">
+        <button md-button class="grayButton" (click)="editSubgroup(subgroup)">
+          <md-icon>edit</md-icon>
+          <span class="size-xl">ändern</span></button>
+        <button md-button class="grayButton"
+                (click)="openSubgroupDialog(subgroup.id, subgroup.name)">
+          <md-icon>delete</md-icon>
+          <span class="size-xl">löschen</span></button>
+        <span
+          class="span__gray">{{subgroup.name}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="groupEditOpen">
+  <form class="form" #f="ngForm" novalidate (ngSubmit)="saveGroup(f.value)">
+    <div class="div__header">
+      <h3 class="h3__small-margins">{{detailHeader}}</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button class="size-xs transparentButton" (click)="cancel()">
+        <md-icon>undo</md-icon>
+        <span class="size-xl"></span></button>
+      <button md-button type="submit" class="size-xs transparentButton">
+        <md-icon>save</md-icon>
+        <span class="size-xl"></span></button>
+    </div>
+    <div class="group-edit-container">
+      <section class="section">
+        <md-input-container class="full-width">
+          <input mdInput placeholder="Name" name="name" required
+                 #groupnameControl="ngModel" [ngModel]="groupname">
+          <md-hint *ngIf="!groupnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+      </section>
+    </div>
+    <div class="button-row size-xl">
+      <span class="fill-remaining-space"></span>
+      <button md-button class="grayButton" (click)="cancel()">
+        <md-icon>undo</md-icon>
+        Abbrechen
+      </button>
+      <button md-button type="submit" [disabled]="!f.valid" class="grayButton">
+        <md-icon>save</md-icon>
+        Speichern
+      </button>
+    </div>
+  </form>
+</div>
+<div *ngIf="subgroupEditOpen">
+  <form class="form" #f="ngForm" novalidate (ngSubmit)="saveSubgroup(f.value)">
+    <div class="div__header">
+      <h3 class="h3__small-margins">{{detailHeader}}</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button class="size-xs transparentButton" (click)="cancel()">
+        <md-icon>undo</md-icon>
+        <span class="size-xl"></span></button>
+      <button md-button type="submit" class="size-xs transparentButton">
+        <md-icon>save</md-icon>
+        <span class="size-xl"></span></button>
+    </div>
+    <div class="group-edit-container">
+      <section class="section">
+        <md-input-container class="full-width">
+          <input mdInput placeholder="Name" name="name" required
+                 #subgroupnameControl="ngModel" [ngModel]="subgroupname">
+          <md-hint *ngIf="!subgroupnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+      </section>
+    </div>
+    <div class="button-row size-xl">
+      <span class="fill-remaining-space"></span>
+      <button md-button class="grayButton" (click)="cancel()">
+        <md-icon>undo</md-icon>
+        Abbrechen
+      </button>
+      <button md-button type="submit" [disabled]="!f.valid" class="grayButton">
+        <md-icon>save</md-icon>
+        Speichern
+      </button>
+    </div>
+  </form>
+</div>

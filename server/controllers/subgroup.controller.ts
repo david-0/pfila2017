@@ -7,7 +7,7 @@ import {ISubgroup} from "../entities/subgroup.interface";
 export class SubgroupController extends GenericController<ISubgroup, ISubgroupDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      "/subgroups",
+      "/api/subgroups",
       SubgroupModel,
       c => new SubgroupModel(c),
       (d, i) => SubgroupController.updateDocument(d, i),

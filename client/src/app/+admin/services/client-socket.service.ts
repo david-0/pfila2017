@@ -10,7 +10,6 @@ import {ISocketItem} from "../../../../../server/entities/socket-item.model";
  */
 @Injectable()
 export class ClientSocketService {
-  private name: string;
   private host: string = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
   socket: SocketIOClient.Socket;
 
@@ -22,13 +21,12 @@ export class ClientSocketService {
    * @returns {any} Observable which follows the "update" signals from socket stream
    */
   get(name: string): Observable<ISocketItem> {
-    this.name = name;
-    let socketUrl = this.host + this.name;
+    let socketUrl = this.host + name;
     this.socket = io.connect(socketUrl, {
       'query': 'token=' + this.authService.getToken()
     });
-    this.socket.on("connect", () => this.connect());
-    this.socket.on("disconnect", () => this.disconnect());
+    this.socket.on("connect", () => this.connect(name));
+    this.socket.on("disconnect", () => this.disconnect(name));
     this.socket.on("error", (error: string) => {
       console.log(`ERROR: "${error}" (${socketUrl})`);
     });
@@ -45,11 +43,11 @@ export class ClientSocketService {
     });
   }
 
-  private connect() {
-    console.log(`Connected to "${this.name}"`);
+  private connect(name: string) {
+    console.log(`Connected to "${name}"`);
   }
 
-  private disconnect() {
-    console.log(`Disconnected from "${this.name}"`);
+  private disconnect(name: string) {
+    console.log(`Disconnected from "${name}"`);
   }
 }

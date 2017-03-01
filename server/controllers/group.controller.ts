@@ -7,7 +7,7 @@ import {IGroup} from "../entities/group.interface";
 export class GroupController extends GenericController<IGroup, IGroupDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      "/groups",
+      "/api/groups",
       GroupModel,
       c => new GroupModel(c),
       (d, i) => GroupController.updateDocument(d, i),
