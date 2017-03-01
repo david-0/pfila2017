@@ -1,3 +1,87 @@
-<p>
-  user-admin works!
-</p>
+<div *ngIf="!userDialog">
+  <div class="div__header">
+    <h3 class="h3__small-margins">Benutzer</h3>
+    <span class="fill-remaining-space"></span>
+    <button md-button class="grayButton" (click)="createUser()">
+      <md-icon>add</md-icon>
+      <span class="size-xl">erstellen</span></button>
+  </div>
+  <div class="registration-container">
+    <div class="line" *ngFor="let user of dataService.items | async">
+      <button md-button class="grayButton" (click)="editUser(user)">
+        <md-icon>edit</md-icon>
+        <span class="size-xl">ändern</span></button>
+      <button md-button *ngIf="authenticationService.isAdmin()" class="grayButton"
+              (click)="openDialog(user.id, user.firstname, user.lastname)">
+        <md-icon>delete</md-icon>
+        <span class="size-xl">löschen</span></button>
+      <span
+        class="span__gray">{{user.firstname}} {{user.lastname}}, {{user.email}}, {{userTypeAsString(user.type)}}</span>
+    </div>
+  </div>
+</div>
+<div *ngIf="userDialog">
+  <form class="form" #f="ngForm" novalidate (ngSubmit)="save(f.value)">
+    <div class="div__header">
+      <h3 class="h3__small-margins">{{detailHeader}}</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button class="size-xs transparentButton" (click)="cancel()">
+        <md-icon>undo</md-icon>
+        <span class="size-xl"></span></button>
+      <button md-button type="submit" class="size-xs transparentButton">
+        <md-icon>save</md-icon>
+        <span class="size-xl"></span></button>
+    </div>
+    <div class="user-container">
+      <section class="section">
+        <md-input-container class="full-width section-middle-size">
+          <input mdInput placeholder="Vorname" name="firstname" required
+                 #firstnameControl="ngModel" [ngModel]="user.firstname">
+          <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+        <md-input-container class="full-width section-middle-size">
+          <input mdInput placeholder="Nachname" name="lastname" required
+                 #lastnameControl="ngModel" [ngModel]="user.lastname">
+          <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+      </section>
+      <section class="section">
+        <md-input-container class="full-width section-middle-size">
+          <input mdInput placeholder="E-Mail" name="email" required emailValidator
+                 #emailControl="ngModel" [ngModel]="user.email">
+          <md-hint *ngIf="!emailControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+        <md-select placeholder="Benutzertype" name="type" #typeControl="ngModel" [ngModel]="user.type">
+          <md-option *ngFor="let t of userTypes" [value]="t.key">
+            {{t.value}}
+          </md-option>
+        </md-select>
+      </section>
+      <section class="section">
+        <md-input-container class="full-width">
+          <input mdInput placeholder="Passwort" name="password" type="password" #passwordControl="ngModel"
+                 [ngModel]="user.password" required validateEqual=confirmPassword reverse="true" minlength="8"
+                 password [digitCharacter]="1" [lowercaseCharacter]="1" [uppercaseCharacter]="1">
+          <md-hint *ngIf="!passwordControl.valid" [ngStyle]="{'color': 'red'}" align="start">Klein & Gross & Zahl, mind.
+            8 Zeichen
+            Zeichen
+          </md-hint>
+        </md-input-container>
+      </section>
+    </div>
+    <div class="button-row size-xl">
+      <span class="fill-remaining-space"></span>
+      <button md-button class="grayButton" (click)="cancel()">
+        <md-icon>undo</md-icon>
+        Abbrechen
+      </button>
+      <button md-button type="submit" [disabled]="!f.valid" class="grayButton">
+        <md-icon>save</md-icon>
+        Speichern
+      </button>
+    </div>
+  </form>
+</div>

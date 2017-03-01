@@ -3,8 +3,8 @@ import {Http, Headers, Response} from "@angular/http";
 import {Observable} from "rxjs";
 import "rxjs/add/operator/map";
 import {tokenNotExpired, JwtHelper} from "angular2-jwt";
-import {UserType} from "../../user";
 import {handleError} from "../../remote/error-utils";
+import {UserType} from "../../../../../server/entities/user-type";
 
 @Injectable()
 export class AuthenticationService {
