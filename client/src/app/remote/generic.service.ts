@@ -23,6 +23,14 @@ export class GenericService<T extends IId> {
     this.dataSubscription.unsubscribe();
   }
 
+  public getCache(id: string) {
+    return this.currentItems.get(id);
+  }
+
+  public getRestService() {
+    return this.restService;
+  }
+
   private processItem(packet: ISocketItem) {
     if (packet.action === "create") {
       this.addItem(packet.item);
