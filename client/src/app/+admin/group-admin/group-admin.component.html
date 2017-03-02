@@ -1,13 +1,13 @@
 <div *ngIf="!groupEditOpen && !subgroupEditOpen" div class="group-subgroup-container">
   <div class="grow">
-    <div class="div__header">
+    <div class="div__header div--maxwith">
       <h3 class="h3__small-margins">Ortsgruppen</h3>
       <span class="fill-remaining-space"></span>
       <button md-button class="grayButton" (click)="createGroup()">
         <md-icon>add</md-icon>
         <span class="size-xl">erstellen</span></button>
     </div>
-    <div class="group-container">
+    <div class="div--maxwith div--margins">
       <div class="line" *ngFor="let group of groupDataService.items | async">
         <button md-button class="grayButton" (click)="editGroup(group)">
           <md-icon>edit</md-icon>
@@ -22,14 +22,14 @@
     </div>
   </div>
   <div *ngIf="selectedGroup" class="grow">
-    <div class="div__header">
+    <div class="div__header div--maxwith">
       <h3 class="h3__small-margins">Gruppen in {{selectedGroup.name}}</h3>
       <span class="fill-remaining-space"></span>
       <button md-button class="grayButton" (click)="createSubroup()">
         <md-icon>add</md-icon>
         <span class="size-xl">erstellen</span></button>
     </div>
-    <div class="group-container">
+    <div class="div--margins div--maxwith">
       <div class="line" *ngFor="let subgroup of filteredSubgroups | async">
         <button md-button class="grayButton" (click)="editSubgroup(subgroup)">
           <md-icon>edit</md-icon>
@@ -56,7 +56,7 @@
         <md-icon>save</md-icon>
         <span class="size-xl"></span></button>
     </div>
-    <div class="group-edit-container">
+    <div class="div--font div--maxwith500 div--margins">
       <section class="section">
         <md-input-container class="full-width">
           <input mdInput placeholder="Name" name="name" required
@@ -91,7 +91,7 @@
         <md-icon>save</md-icon>
         <span class="size-xl"></span></button>
     </div>
-    <div class="group-edit-container">
+    <div class="div--font div--maxwith500 div--margins">
       <section class="section">
         <md-input-container class="full-width">
           <input mdInput placeholder="Name" name="name" required

@@ -6,7 +6,7 @@
       <md-icon>add</md-icon>
       <span class="size-xl">erstellen</span></button>
   </div>
-  <div class="group-container">
+  <div class="div--margins div--maxwith">
     <div class="line" *ngFor="let user of dataService.items | async">
       <button md-button class="grayButton" (click)="editUser(user)">
         <md-icon>edit</md-icon>
@@ -20,7 +20,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="userDialog" class="group-container">
+<div *ngIf="userDialog" >
   <form class="form" #f="ngForm" novalidate (ngSubmit)="saveUser(f.value)">
     <div class="div__header">
       <h3 class="h3__small-margins">{{detailHeader}}</h3>
@@ -32,7 +32,7 @@
         <md-icon>save</md-icon>
         <span class="size-xl"></span></button>
     </div>
-    <div class="user-container">
+    <div class="div--margins div--font div--maxwith500">
       <section class="section">
         <md-input-container class="full-width section-middle-size">
           <input mdInput placeholder="Vorname" name="firstname" required
