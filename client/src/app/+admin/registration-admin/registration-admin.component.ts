@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {IGroup} from "../../../../../server/entities/group.interface";
 import {ISubgroup} from "../../../../../server/entities/subgroup.interface";
+import {Observable} from "rxjs";
+import {List} from "immutable";
 
 @Component({
   selector: 'app-registration-admin',
@@ -17,6 +19,7 @@ import {ISubgroup} from "../../../../../server/entities/subgroup.interface";
 })
 export class RegistrationAdminComponent implements OnInit, OnDestroy {
   private personDataService: GenericService<IPerson>;
+  private sortedPersons: Observable<List<ISubgroup>>;
   private groupDataService: GenericService<IGroup>;
   private subgroupDataService: GenericService<ISubgroup>;
   private selectedPerson: IPerson;
@@ -39,12 +42,38 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.personDataService = new GenericService<IPerson>(this.http, this.socketService, "/api/persons", "/api/persons");
-    this.personDataService.getAll();
     this.groupDataService = new GenericService<IGroup>(this.http, this.socketService, "/api/groups", "/api/groups");
     this.groupDataService.getAll();
     this.subgroupDataService = new GenericService<ISubgroup>(this.http, this.socketService, "/api/subgroups", "/api/subgroups");
     this.subgroupDataService.getAll();
+    this.personDataService = new GenericService<IPerson>(this.http, this.socketService, "/api/persons", "/api/persons");
+    this.personDataService.getAll();
+    this.sortedPersons = this.personDataService.items.map(persons => List<ISubgroup>(persons.sort((a, b) => this.compare(a, b))))
+  }
+
+  private compare(a: IPerson, b: IPerson): number {
+    let subgroupA = this.subgroupDataService.getCache(a.subgroupId);
+    let subgroupB = this.subgroupDataService.getCache(b.subgroupId);
+    let groupNameA = this.groupDataService.getCache(subgroupA.groupId).name;
+    let groupNameB = this.groupDataService.getCache(subgroupB.groupId).name;
+    let result = groupNameA.localeCompare(groupNameB);
+    if (result !== 0) {
+      return result;
+    }
+    let subgroupNameA = subgroupA.name;
+    let subgroupNameB = subgroupB.name;
+    result = subgroupNameA.localeCompare(subgroupNameB);
+    if (result !== 0) {
+      return result;
+    }
+    result = a.lastname.localeCompare(b.lastname);
+    if (result !== 0) {
+      return result;
+    }
+    result = a.firstname.localeCompare(b.firstname);
+    if (result !== 0) {
+      return result;
+    }
   }
 
   ngOnDestroy() {

@@ -10,7 +10,7 @@ import {GenericRestService} from "../../remote/generic-rest.service";
 import {IGroup} from "../../../../../server/entities/group.interface";
 import {ISubgroup} from "../../../../../server/entities/subgroup.interface";
 import {Observable} from "rxjs";
-import {List, Iterable} from "immutable";
+import {List} from "immutable";
 
 @Component({
   selector: 'app-group-admin',
@@ -39,7 +39,6 @@ export class GroupAdminComponent implements OnInit, OnDestroy {
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
-              private authenticationService: AuthenticationService,
               public dialog: MdDialog,
               private router: Router) {
   }
