@@ -7,7 +7,8 @@ import {AuthenticationService} from "../services/authentication.service";
 import {MdDialog} from "@angular/material";
 import {Router} from "@angular/router";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
-import {GenericRestService} from "../../remote/generic-rest.service";
+import {IGroup} from "../../../../../server/entities/group.interface";
+import {ISubgroup} from "../../../../../server/entities/subgroup.interface";
 
 @Component({
   selector: 'app-registration-admin',
@@ -15,8 +16,9 @@ import {GenericRestService} from "../../remote/generic-rest.service";
   styleUrls: ['./registration-admin.component.scss']
 })
 export class RegistrationAdminComponent implements OnInit, OnDestroy {
-  private dataService: GenericService<IPerson>;
-  private restService: GenericRestService<IPerson>;
+  private personDataService: GenericService<IPerson>;
+  private groupDataService: GenericService<IGroup>;
+  private subgroupDataService: GenericService<ISubgroup>;
   private selectedPerson: IPerson;
 
   constructor(private http: AuthHttp,
@@ -31,19 +33,24 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.message = `${firstname} ${lastname} löschen? `;
     dialogRef.afterClosed().subscribe(result => {
       if (result === "Ja") {
-        this.restService.del(id).subscribe().unsubscribe();
+        this.personDataService.getRestService().del(id).subscribe().unsubscribe();
       }
     });
   }
 
   ngOnInit() {
-    this.dataService = new GenericService<IPerson>(this.http, this.socketService, "/api/persons", "/api/persons");
-    this.dataService.getAll();
-    this.restService = new GenericRestService<IPerson>(this.http, "/api/persons");
+    this.personDataService = new GenericService<IPerson>(this.http, this.socketService, "/api/persons", "/api/persons");
+    this.personDataService.getAll();
+    this.groupDataService = new GenericService<IGroup>(this.http, this.socketService, "/api/groups", "/api/groups");
+    this.groupDataService.getAll();
+    this.subgroupDataService = new GenericService<ISubgroup>(this.http, this.socketService, "/api/subgroups", "/api/subgroups");
+    this.subgroupDataService.getAll();
   }
 
   ngOnDestroy() {
-    this.dataService.disconnect();
+    this.personDataService.disconnect();
+    this.groupDataService.disconnect();
+    this.subgroupDataService.disconnect();
   }
 
   private showDetails(person: IPerson) {

@@ -13,7 +13,7 @@
           </md-option>
         </md-select>-->
 
-    <div class="line" *ngFor="let person of dataService.items | async">
+    <div class="line" *ngFor="let person of personDataService.items | async">
       <button md-button class="grayButton" [routerLink]="[{ outlets: { admin: ['changePerson'] } }]">
         <md-icon>edit</md-icon>
         <span class="size-xl">ändern</span></button>
@@ -24,7 +24,9 @@
               (click)="openDialog(person.id, person.firstname, person.lastname)">
         <md-icon>delete</md-icon>
         <span class="size-xl">löschen</span></button>
-      <span class="span__gray">{{person.firstname}} {{person.lastname}}, {{person.city}}</span>
+      <span class="span__gray">{{person.firstname}} {{person.lastname}},
+        {{groupDataService.getCache(subgroupDataService.getCache(person.subgroupId)?.groupId)?.name}} -
+        {{subgroupDataService.getCache(person.subgroupId)?.name}}</span>
     </div>
   </div>
 </div>
