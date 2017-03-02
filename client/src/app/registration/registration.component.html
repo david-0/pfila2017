@@ -1,91 +1,95 @@
 <h2 class="h2-element">Anmeldung</h2>
-<form class="form" [formGroup]="form" novalidate>
+<form class="form" #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid)">
   <section class="section">
     <div class="select-container">
-      <md-select placeholder="Ortsgruppe" formControlName="group" class="topborder"
-                 (ngModelChange)="resetSubgroup($event)">
-        <md-option *ngFor="let group of groups" [value]="group">
+      <md-select placeholder="Ortsgruppe" name="group" [ngModel]="group" class="topborder"
+                 (ngModelChange)="updateSubgroup($event)" #groupControl="ngModel" required>
+        <md-option *ngFor="let group of groups1 | async" [value]="group">
           {{group.name }}
         </md-option>
       </md-select>
-      <p class="hint" *ngIf="!form.controls.group.valid">erforderlich</p>
+      <p class="hint" *ngIf="!groupControl.valid">erforderlich</p>
     </div>
 
-    <div class="select-container" *ngIf="form.controls.group.value">
-      <md-select placeholder="Gruppe" formControlName="subgroup" class="topborder">
-        <md-option *ngFor="let subgroup of form.controls.group.value.groups" [value]="subgroup">
+    <div class="select-container" *ngIf="groupControl.value">
+      <md-select placeholder="Gruppe" name="subgroup" [formControl]="subgroupControl" class="topborder" required>
+        <md-option *ngFor="let subgroup of filteredSubgroups | async" [value]="subgroup">
           {{subgroup.name}}
         </md-option>
       </md-select>
-      <p class="hint" *ngIf="!form.controls.subgroup.valid">erforderlich</p>
+      <p class="hint" *ngIf="!subgroupControl.valid">erforderlich</p>
     </div>
-    <p class="date-element" *ngIf="form.controls.subgroup?.value?.name === 'Jungschi'">03. - 05. Juni 2017</p>
-    <p class="date-element" *ngIf="form.controls.subgroup?.value?.name === 'Ameisli'">04. Juni 2017</p>
+    <p class="date-element" *ngIf="subgroupControl?.value?.name === 'Jungschi'">03. - 05. Juni 2017</p>
+    <p class="date-element" *ngIf="subgroupControl?.value?.name === 'Ameisli'">04. Juni 2017</p>
   </section>
 
   <section class="section">
     <md-input-container class="full-width section-middle-size">
-      <input mdInput placeholder="Vorname" formControlName="firstname">
-      <md-hint *ngIf="!form.controls.firstname.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+      <input mdInput placeholder="Vorname" name="firstname" [ngModel]="firstname" #firstnameControl="ngModel" required>
+      <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
       </md-hint>
     </md-input-container>
     <md-input-container class="full-width section-middle-size">
-      <input mdInput placeholder="Nachname" formControlName="lastname">
-      <md-hint *ngIf="!form.controls.lastname.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
+      <input mdInput placeholder="Nachname" name="lastname" [ngModel]="lastname" #lastnameControl="ngModel" required>
+      <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
   </section>
 
   <section class="section">
     <md-input-container class="full-width section-big">
-      <input mdInput placeholder="Strasse" formControlName="street">
-      <md-hint *ngIf="!form.controls.street.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
+      <input mdInput placeholder="Strasse" name="street" [ngModel]="street" #streetControl="ngModel" required>
+      <md-hint *ngIf="!streetControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
     <md-input-container class="full-width section-small">
-      <input mdInput placeholder="Hausnummer" formControlName="streetNumber">
+      <input mdInput placeholder="Hausnummer" name="streetNumber" [ngModel]="streetNumber"
+             #streetNumberControl="ngModel">
     </md-input-container>
   </section>
 
   <section class="section">
     <md-input-container class="full-width section-small">
-      <input mdInput placeholder="PLZ" formControlName="plz">
-      <md-hint *ngIf="!form.controls.plz.valid" [ngStyle]="{'color': 'red'}" align="start">gültige PLZ</md-hint>
-      <!-- https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=zipcode&limit=2&searchText=8001 -->
+      <input mdInput placeholder="PLZ" name="plz" [formControl]="plzControl" required
+             pattern="^((DE-\d{5})|((CH-)?\d{4})){1}$">
+      <md-hint *ngIf="!plzControl.valid" [ngStyle]="{'color': 'red'}" align="start">gültige PLZ</md-hint>
     </md-input-container>
-
     <md-input-container class="full-width section-big">
-      <input mdInput placeholder="Ort" formControlName="city">
-      <md-hint *ngIf="!form.controls.city.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
+      <input mdInput placeholder="Ort" name="city" [formControl]="cityControl" required>
+      <md-hint *ngIf="!cityControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
     </md-input-container>
   </section>
   <section class="section">
     <md-input-container class="full-width">
-      <input mdInput placeholder="E-Mail" formControlName="email">
-      <md-hint *ngIf="!form.controls.email.valid" [ngStyle]="{'color': 'red'}" align="start">gültige E-Mail Adresse
+      <input mdInput placeholder="E-Mail" name="email" [ngModel]="email" #emailControl="ngModel"
+             pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+      <md-hint *ngIf="!emailControl.valid" [ngStyle]="{'color': 'red'}" align="start">gültige E-Mail Adresse
         erforderlich
       </md-hint>
     </md-input-container>
   </section>
   <section class="section">
     <md-input-container class="full-width section-middle-size">
-      <input mdInput placeholder="Telefonnummer" formControlName="phoneNumber">
-      <md-hint *ngIf="!form.controls.phoneNumber.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+      <input mdInput placeholder="Telefonnummer" name="phoneNumber" [ngModel]="phoneNumber1" #phoneNumber="ngModel"
+             required>
+      <md-hint *ngIf="!phoneNumber.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
       </md-hint>
     </md-input-container>
     <md-input-container class="full-width section-middle-size">
-      <input mdInput placeholder="Geburtsdatum" formControlName="dateOfBirth">
-      <md-hint *ngIf="!form.controls.dateOfBirth.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich,
+      <input mdInput placeholder="Geburtsdatum" name="dateOfBirth" [ngModel]="dateOfBirth1" #dateOfBirth="ngModel"
+             required pattern="^\d{1,2}\.\d{1,2}\.\d{4}$">
+      <md-hint *ngIf="!dateOfBirth.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich,
         Format: DD.MM.YYYY
       </md-hint>
     </md-input-container>
   </section>
   <section class="section">
     <md-input-container class="full-width">
-      <input mdInput placeholder="Allergien / Diät" formControlName="allergies"/>
+      <input mdInput placeholder="Allergien / Diät" name="allergies" [ngModel]="allergies" #allergiesContext="ngModel"/>
     </md-input-container>
   </section>
   <section class="section">
     <md-input-container class="full-width">
-      <textarea mdInput placeholder="Bemerkungen" class="comments" formControlName="comments"></textarea>
+         <textarea mdInput placeholder="Bemerkungen" class="comments" name="comments" [ngModel]="comments"
+                   #commentsControl="ngModel"></textarea>
     </md-input-container>
   </section>
 
@@ -93,23 +97,24 @@
     <section class="tiny-section">
       <div>Ich wünsche Detailinformationen per</div>
       <div>
-        <md-radio-group class="full-width" formControlName="notification">
+        <md-radio-group class="full-width" name="notification" [ngModel]="notifications"
+                        #notificationsControl="ngModel" required>
           <md-radio-button value="email">E-Mail</md-radio-button>
           <md-radio-button value="post">Post</md-radio-button>
         </md-radio-group>
       </div>
     </section>
-    <p class="hint" *ngIf="!form.controls.notification.valid">erforderlich</p>
+    <p class="hint" *ngIf="!notificationsControl.valid">erforderlich</p>
   </div>
   <section class="tiny-section full-width">
-    <md-checkbox formControlName="leader">
+    <md-checkbox name="leader" [ngModel]="leader" #leaderControl="ngModel">
       Ich bin Leiter
     </md-checkbox>
   </section>
 
   <div class="button-row">
     <span class="fill-remaining-space"></span>
-    <button md-button (click)="save(form.value, form.valid)" [disabled]="!form.valid" class="grayButton">Anmelden
+    <button md-button type="submit" [disabled]="!f.valid" class="grayButton">Anmelden
     </button>
   </div>
 </form>

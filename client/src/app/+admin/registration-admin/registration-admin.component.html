@@ -7,7 +7,7 @@
   <div class="group-container">
     <!--  <div class="table">
         <md-select placeholder="Gruppenfilter" name="filter" class="topborder"
-                   (ngModelChange)="resetSubgroup($event)">
+                   (ngModelChange)="updateSubgroup($event)">
           <md-option *ngFor="let group of groups" [value]="group">
             {{group.name }}
           </md-option>

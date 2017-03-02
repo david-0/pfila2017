@@ -14,6 +14,7 @@ import "hammerjs";
 import {GlobalHttpOptions} from "./remote/GlobalHttpOptions";
 import {ConfirmationComponent} from "./confirmation/confirmation.component";
 import {MySpinnerModule} from "./my-spinner/my-spinner.module";
+import {ClientSocketService} from "./+admin/services/client-socket.service";
 
 @NgModule({
   declarations: [
