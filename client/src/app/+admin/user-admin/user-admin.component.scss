@@ -14,14 +14,6 @@
   margin: 0;
 }
 
-.fill-remaining-space {
-  flex: 1 1 auto;
-}
-
-.div--font {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
 .p__small-margin {
   margin-top: 0.4em;
   margin-bottom: 0.4em;
@@ -96,10 +88,6 @@
 
 .size-xs {
   display: none;
-}
-
-.fill-remaining-space {
-  flex: 1 1 auto;
 }
 
 @media screen and (max-width: 600px) {

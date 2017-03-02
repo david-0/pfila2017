@@ -5,20 +5,12 @@
   padding: 0.5em;
 }
 
-.grow {
-  flex-grow: 1;
-}
-
 .icon--rightpad {
   padding-right: 0.5em;
 }
 
 .h3__small-margins {
   margin: 0;
-}
-
-.fill-remaining-space {
-  flex: 1 1 auto;
 }
 
 .group-edit-container {
@@ -105,10 +97,6 @@
 
 .size-xs {
   display: none;
-}
-
-.fill-remaining-space {
-  flex: 1 1 auto;
 }
 
 @media screen and (max-width: 1000px) {

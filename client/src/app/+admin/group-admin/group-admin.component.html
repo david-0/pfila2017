@@ -1,5 +1,5 @@
 <div *ngIf="!groupEditOpen && !subgroupEditOpen" div class="group-subgroup-container">
-  <div class="grow">
+  <div class="div--grow">
     <div class="div__header div--maxwith">
       <h3 class="h3__small-margins">Ortsgruppen</h3>
       <span class="fill-remaining-space"></span>
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="selectedGroup" class="grow">
+  <div *ngIf="selectedGroup" class="div--grow">
     <div class="div__header div--maxwith">
       <h3 class="h3__small-margins">Gruppen in {{selectedGroup.name}}</h3>
       <span class="fill-remaining-space"></span>
