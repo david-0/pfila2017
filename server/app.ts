@@ -87,26 +87,11 @@ class Server {
       next();
     });
 
-    let personController = new PersonController(this.socketService);
-    let groupController = new GroupController(this.socketService);
-    let subgroupController = new SubgroupController(this.socketService);
-    this.app.use('/api/persons', GenericRouter.get(personController));
-    this.app.use('/api/persons', GenericRouter.post(personController));
-    this.app.use('/api/groups', GenericRouter.get(groupController));
-    this.app.use('/api/subgroups', GenericRouter.get(subgroupController));
+    this.app.use('/api/persons', GenericRouter.create(new PersonController(this.socketService)));
+    this.app.use('/api/groups', GenericRouter.create(new GroupController(this.socketService)));
+    this.app.use('/api/subgroups', GenericRouter.create(new SubgroupController(this.socketService)));
     this.app.use(authenticationRoute);
-    this.app.use('/api/persons', GenericRouter.put(personController));
-    this.app.use('/api/persons', GenericRouter.del(personController));
-    this.app.use('/api/groups', GenericRouter.post(groupController));
-    this.app.use('/api/groups', GenericRouter.put(groupController));
-    this.app.use('/api/groups', GenericRouter.del(groupController));
-    this.app.use('/api/subgroups', GenericRouter.post(subgroupController));
-    this.app.use('/api/subgroups', GenericRouter.put(subgroupController));
-    this.app.use('/api/subgroups', GenericRouter.del(subgroupController));
-    this.app.use('/api/users', requiresStandardOrAdmin, GenericRouter.all(new UserController(this.socketService)));
-    personController.init();
-    groupController.init();
-    subgroupController.init();
+    this.app.use('/api/users', requiresStandardOrAdmin, GenericRouter.create(new UserController(this.socketService)));
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
       next(createError(404, `No route found for ${req.method} ${req.url}`));
