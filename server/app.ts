@@ -91,11 +91,11 @@ class Server {
     let groupController = new GroupController(this.socketService);
     let subgroupController = new SubgroupController(this.socketService);
     let userController = new UserController(this.socketService);
-    this.app.use('/api/persons', GenericRouter.get(personController));
     this.app.use('/api/groups', GenericRouter.get(groupController));
     this.app.use('/api/subgroups', GenericRouter.get(subgroupController));
     this.app.use('/api/persons', GenericRouter.post(personController));
     this.app.use(authenticationRoute);
+    this.app.use('/api/persons', GenericRouter.get(personController));
     this.app.use('/api/groups', GenericRouter.post(groupController));
     this.app.use('/api/subgroups', GenericRouter.post(subgroupController));
     this.app.use('/api/persons', GenericRouter.put(personController));
