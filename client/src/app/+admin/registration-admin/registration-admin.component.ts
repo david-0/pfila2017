@@ -11,6 +11,8 @@ import {IGroup} from "../../../../../server/entities/group.interface";
 import {ISubgroup} from "../../../../../server/entities/subgroup.interface";
 import {Observable} from "rxjs";
 import {List} from "immutable";
+import {saveAs} from "file-saver";
+import {CsvExporter} from "./csv-exporter";
 
 @Component({
   selector: 'app-registration-admin',
@@ -19,7 +21,7 @@ import {List} from "immutable";
 })
 export class RegistrationAdminComponent implements OnInit, OnDestroy {
   private personDataService: GenericService<IPerson>;
-  private sortedPersons: Observable<List<ISubgroup>>;
+  private sortedPersons: Observable<List<IPerson>>;
   private groupDataService: GenericService<IGroup>;
   private subgroupDataService: GenericService<ISubgroup>;
   private selectedPerson: IPerson;
@@ -43,12 +45,24 @@ export class RegistrationAdminComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.groupDataService = new GenericService<IGroup>(this.http, this.socketService, "/api/groups", "/api/groups");
-    this.groupDataService.getAll();
+    let groupObservable = this.groupDataService.getAll();
     this.subgroupDataService = new GenericService<ISubgroup>(this.http, this.socketService, "/api/subgroups", "/api/subgroups");
-    this.subgroupDataService.getAll();
+    let subgroupObservable = this.subgroupDataService.getAll();
     this.personDataService = new GenericService<IPerson>(this.http, this.socketService, "/api/persons", "/api/persons");
-    this.personDataService.getAll();
-    this.sortedPersons = this.personDataService.items.map(persons => List<ISubgroup>(persons.sort((a, b) => this.compare(a, b))))
+    let sub = Observable.forkJoin(groupObservable, subgroupObservable).subscribe((res) => {
+      this.sortedPersons = this.personDataService.items.map(persons => List<IPerson>(persons.sort((a, b) => this.compare(a, b))));
+      this.personDataService.getAll();
+      sub.unsubscribe();
+    });
+  }
+
+  private saveFile() {
+    let sub = this.sortedPersons.subscribe(persons => {
+      let csvExporter = new CsvExporter(this.groupDataService, this.subgroupDataService);
+      let data = csvExporter.export(persons.toArray());
+      let blob = new Blob([data], {type: "text/csv;charset=utf-8"});
+      saveAs(blob, "report.csv");
+    });
   }
 
   private compare(a: IPerson, b: IPerson): number {

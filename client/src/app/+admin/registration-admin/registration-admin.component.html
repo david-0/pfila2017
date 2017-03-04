@@ -2,7 +2,10 @@
   <div class="div__header">
     <h3 class="h3__small-margins">Anmeldungen</h3>
     <span class="fill-remaining-space"></span>
-    <a href="/export.pdf">Export</a>
+    <button md-button [disabled]="!sortedPersons" (click)="saveFile()">
+      <md-icon>forward</md-icon>
+      Export
+    </button>
   </div>
   <div class="group-container">
     <!--  <div class="table">
@@ -25,8 +28,8 @@
         <md-icon>delete</md-icon>
         <span class="size-xl">löschen</span></button>
       <span class="span__gray">{{person.firstname}} {{person.lastname}},
-        {{groupDataService.getCache(subgroupDataService.getCache(person.subgroupId)?.groupId)?.name}} -
-        {{subgroupDataService.getCache(person.subgroupId)?.name}}</span>
+        {{subgroupDataService.getCache(person.subgroupId)?.name}} -
+        {{groupDataService.getCache(subgroupDataService.getCache(person.subgroupId)?.groupId)?.name}}</span>
     </div>
   </div>
 </div>
