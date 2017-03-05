@@ -1,12 +1,13 @@
-import {ReplaySubject, Subscription} from "rxjs";
+import {ReplaySubject, Subscription, Observable, Subject} from "rxjs";
 import {ClientSocketService} from "../+admin/services/client-socket.service";
 import {List} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
 import {GenericRestService} from "./generic-rest.service";
 import {MyHttpInterface} from "./my-http.interface";
+import {CacheService} from "./cache.service";
 
-export class GenericService<T extends IId> {
+export class GenericService<T extends IId> implements CacheService<T>{
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
   private currentItems: Map<string, T> = new Map<string, T>();
   private dataSubscription: Subscription;
@@ -59,10 +60,17 @@ export class GenericService<T extends IId> {
     }, (err: any) => this.items.error(err));
   }
 
-  public getAll() {
+  public getAll(): Observable<T[]> {
+    let subject = new Subject<T[]>();
     this.restService.getAll().subscribe((items: T[]) => {
       this.addAll(items);
-    }, (err: any) => this.items.error(err));
+      subject.next(items);
+      subject.complete();
+    }, (err: any) => {
+      this.items.error(err);
+      subject.error(err);
+    });
+    return subject;
   }
 
   private addAll(items: T[]) {
