@@ -1,7 +1,4 @@
-import {IId} from "./id.interface";
-
-export interface IPerson extends IId {
-  id: any;
+export interface IExportPerson {
   createDate?: Date;
   firstname: string;
   lastname: string;
@@ -15,6 +12,7 @@ export interface IPerson extends IId {
   allergies?: string;
   comments?: string;
   notification: string;
-  subgroupId: string;
-  leader: boolean;
+  groupName: string;
+  subgroupName: string;
+  leader: string;
 }
