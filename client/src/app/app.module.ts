@@ -1,45 +1,29 @@
-import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpModule, RequestOptions} from "@angular/http";
-import {MaterialModule} from "@angular/material";
+import {RequestOptions} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {AppRouteModule} from "./app-route-module";
-import {RegistrationComponent} from "./registration/registration.component";
 import {InfoComponent} from "./info/info.component";
 import {TeamComponent} from "./team/team.component";
 import {HomeComponent} from "./home/home.component";
-import {DebugPipe} from "./registration/debug.pipe";
+import {DebugPipe} from "./+registration/registration/debug.pipe";
 import "hammerjs";
-import {GlobalHttpOptions} from "./remote/GlobalHttpOptions";
-import {ConfirmationComponent} from "./confirmation/confirmation.component";
-import {MySpinnerModule} from "./my-spinner/my-spinner.module";
-import {ClientSocketService} from "./+admin/services/client-socket.service";
+import {GlobalHttpOptions} from "./+registration/options/GlobalHttpOptions";
+import {ConfirmationComponent} from "./+registration/confirmation/confirmation.component";
+import {BrowserModule} from "@angular/platform-browser";
+import {MaterialModule} from "@angular/material";
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent,
     InfoComponent,
     TeamComponent,
     HomeComponent,
     DebugPipe,
-    ConfirmationComponent,
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
-    MaterialModule,
     AppRouteModule,
-    MySpinnerModule,
-  ],
-  providers: [
-    {
-      provide: RequestOptions,
-      useClass: GlobalHttpOptions,
-    },
+    BrowserModule,
+    MaterialModule,
   ],
   bootstrap: [AppComponent]
 })

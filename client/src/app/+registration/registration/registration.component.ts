@@ -1,19 +1,17 @@
 import {Component, OnInit} from "@angular/core";
-import {Validators, FormControl, FormGroup, FormBuilder} from "@angular/forms";
-import {ClientSocketService} from "../+admin/services/client-socket.service";
+import {FormControl} from "@angular/forms";
 import {Router} from "@angular/router";
-import {IPerson} from "../../../../server/entities/person.interface";
-import {IGroup} from "../../../../server/entities/group.interface";
+import {IPerson} from "../../../../../server/entities/person.interface";
+import {IGroup} from "../../../../../server/entities/group.interface";
 import {Http} from "@angular/http";
-import {GenericRestService} from "../remote/generic-rest.service";
+import {GenericRestService} from "../../remote/generic-rest.service";
 import {Subscription, Observable} from "rxjs";
-import {GenericService} from "../remote/generic.service";
-import {ISubgroup} from "../../../../server/entities/subgroup.interface";
+import {ISubgroup} from "../../../../../server/entities/subgroup.interface";
 import {List} from "immutable";
 
 @Component({
   selector: 'app-registration',
-  templateUrl: './registration.component.html',
+  templateUrl: 'registration.component.html',
   styleUrls: ['registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
@@ -99,7 +97,7 @@ export class RegistrationComponent implements OnInit {
     person.createDate = new Date();
     // write to DB
     this.busy = this.restService.add(person).subscribe((person: IPerson) => {
-      this.router.navigate(["confirmation", person.id]);
+      this.router.navigate(["registration/confirmation"]);
     }, (err: any) => {
       this.router.navigate(["error"]);
     });
