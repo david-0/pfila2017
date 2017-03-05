@@ -1,5 +1,5 @@
 <div *ngIf="!userDialog">
-  <div class="div__header">
+  <div class="div__header div--maxwith">
     <h3 class="h3__small-margins">Benutzer</h3>
     <span class="fill-remaining-space"></span>
     <button md-button class="grayButton" (click)="createUser()">
@@ -20,7 +20,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="userDialog" >
+<div *ngIf="userDialog">
   <form class="form" #f="ngForm" novalidate (ngSubmit)="saveUser(f.value)">
     <div class="div__header">
       <h3 class="h3__small-margins">{{detailHeader}}</h3>
