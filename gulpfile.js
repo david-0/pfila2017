@@ -3,7 +3,7 @@ var spawn = require('child_process').spawn;
 var spawnSync = require('child_process').spawnSync;
 const gulpExe = require.resolve('./node_modules/.bin/gulp');
 
-gulp.task('default', ['run-without-client-logs']);
+gulp.task('default', ['run-server']);
 gulp.task('run-with-client-logs', ['watch-and-build-client', 'run-server']);
 //gulp.task('run-without-client-logs', ['watch-and-build-client-without-logs', 'run-server']);
 gulp.task('run-server', function () {
