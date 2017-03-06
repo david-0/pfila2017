@@ -30,6 +30,9 @@ import {ConfirmationComponent} from "./confirmation/confirmation.component";
       useClass: GlobalHttpOptions,
     },
   ],
+  exports: [
+    RegistrationComponent,
+  ]
 })
 export class RegistrationModule {
 }
