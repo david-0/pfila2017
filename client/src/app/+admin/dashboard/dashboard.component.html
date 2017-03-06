@@ -1,13 +1,13 @@
 <div color="primary" class="admin-container">
   <button md-button *ngIf="authenticationService.isAdmin()"
-          class="button" [routerLink]="[{ outlets: { admin: ['users'] } }]">Benutzer
+          class="button" [routerLink]="['users']">Benutzer
   </button>
   <button md-button *ngIf="authenticationService.isAdmin()" class="button"
-          [routerLink]="[{ outlets: { admin: ['groups'] } }]">Gruppen
+          [routerLink]="['groups']">Gruppen
   </button>
-  <button md-button class="button" [routerLink]="[{ outlets: { admin: ['registrations'] } }]">Anmeldungen</button>
+  <button md-button class="button" [routerLink]="['registrations']">Anmeldungen</button>
   <span class="fill-remaining-space"></span>
-  <button md-button class="button" [routerLink]="[{ outlets: { admin: ['change-password'] } }]">Password ändern</button>
+  <button md-button class="button" [routerLink]="['change-password']">Password ändern</button>
   <button md-button class="button" [routerLink]="['/admin/logout']">Logout</button>
 </div>
-<router-outlet name="admin"></router-outlet>
+<router-outlet></router-outlet>

@@ -21,6 +21,8 @@ import {PasswordChangeConfirmationComponent} from "./password-change-confirmatio
 import {EqualValidator} from "./password-change/equals-validator.directives";
 import {ValidatorsModule} from "ng2-validators";
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
+import {RegistrationModule} from "../+registration/registration.module";
+
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -37,6 +39,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AdminRouterModule,
     MySpinnerModule,
     ValidatorsModule,
+    RegistrationModule,
   ],
   declarations: [
     LoginComponent,
