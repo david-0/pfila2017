@@ -94,11 +94,12 @@ class Server {
     this.app.use('/api/groups', GenericRouter.get(groupController));
     this.app.use('/api/subgroups', GenericRouter.get(subgroupController));
     this.app.use('/api/persons', GenericRouter.post(personController));
+    this.app.use('/api/persons', GenericRouter.put(personController));
+    this.app.use('/api/persons', GenericRouter.getOne(personController));
     this.app.use(authenticationRoute);
-    this.app.use('/api/persons', GenericRouter.get(personController));
+    this.app.use('/api/persons', GenericRouter.getAll(personController));
     this.app.use('/api/groups', GenericRouter.post(groupController));
     this.app.use('/api/subgroups', GenericRouter.post(subgroupController));
-    this.app.use('/api/persons', GenericRouter.put(personController));
     this.app.use('/api/groups', GenericRouter.put(groupController));
     this.app.use('/api/subgroups', GenericRouter.put(subgroupController));
     this.app.use('/api/persons', GenericRouter.del(personController));

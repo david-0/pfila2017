@@ -23,6 +23,18 @@ export class GenericRouter {
     return router;
   }
 
+  public static getOne(controller: IController): Router {
+    let router = express.Router();
+    router.route('/:id').get((req, res) => controller.get(req, res));
+    return router;
+  }
+
+  public static getAll(controller: IController): Router {
+    let router = express.Router();
+    router.route('/').get((req, res) => controller.getAll(req, res));
+    return router;
+  }
+
   public static post(controller: IController): Router {
     let router = express.Router();
     router.route('/').post((req, res) => controller.add(req, res));
