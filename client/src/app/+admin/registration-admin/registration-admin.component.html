@@ -17,7 +17,7 @@
         </md-select>-->
 
     <div class="line" *ngFor="let person of sortedPersons | async">
-      <button md-button class="grayButton" [routerLink]="[ '/admin/dashboard/change-person' ]">
+      <button md-button class="grayButton" [routerLink]="[ '/admin/dashboard/change-person', person.id ]">
         <md-icon>edit</md-icon>
         <span class="size-xl">ändern</span></button>
       <button md-button class="grayButton" (click)="showDetails(person)">
@@ -39,6 +39,7 @@
     <h3 class="h3__small-margins">Details</h3>
   </div>
   <div class="details-container">
+    <p class="p__small-margin">Anmeldedatum: {{selectedPerson.createDate}}</p>
     <p class="p__small-margin">Name: {{selectedPerson.firstname}} {{selectedPerson.lastname}}</p>
     <p class="p__small-margin">Adresse: {{selectedPerson.street}} {{selectedPerson.streetNumber}}</p>
     <p class="p__small-margin">Ort: {{selectedPerson.plz}} {{selectedPerson.city}}</p>
