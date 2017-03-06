@@ -1,6 +1,6 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {FormControl} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {IPerson} from "../../../../../server/entities/person.interface";
 import {IGroup} from "../../../../../server/entities/group.interface";
 import {Http} from "@angular/http";
@@ -14,20 +14,27 @@ import {List} from "immutable";
   templateUrl: 'registration.component.html',
   styleUrls: ['registration.component.scss']
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, OnDestroy {
 
   private restService: GenericRestService<IPerson>;
   private busy: Subscription;
 
-  private filteredSubgroups: Observable<List<ISubgroup>>;
-  private groups1: Observable<List<IGroup>>;
-  private subgroups1: Observable<List<ISubgroup>>;
+  private filteredSubgroups: List<ISubgroup>;
+  private groups1: List<IGroup>;
+  private subgroups1: List<ISubgroup>;
   private plzControl: FormControl = new FormControl();
   private cityControl: FormControl = new FormControl();
   private subgroupControl: FormControl = new FormControl();
+  private sub: Subscription;
+
+  private edit: boolean;
+  private person: IPerson;
+  private group: IGroup;
+  private subgroup: ISubgroup;
 
   constructor(private router: Router,
-              private http: Http) {
+              private http: Http,
+              private route: ActivatedRoute) {
     this.plzControl.valueChanges
       .let(this.getPlzObservable)
       .let((o) => this.getCityObservable(o, http))
@@ -37,8 +44,31 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
     this.restService = new GenericRestService<IPerson>(this.http, "/api/persons");
 
-    this.groups1 = new GenericRestService<IGroup>(this.http, "/api/groups").getAll().map(groups => List<IGroup>(groups));
-    this.subgroups1 = new GenericRestService<ISubgroup>(this.http, "/api/subgroups").getAll().map(subgroups => List<ISubgroup>(subgroups));
+    new GenericRestService<IGroup>(this.http, "/api/groups").getAll().map(groups => List<IGroup>(groups)).subscribe(groups => this.groups1 = groups);
+    new GenericRestService<ISubgroup>(this.http, "/api/subgroups").getAll().map(subgroups => List<ISubgroup>(subgroups)).subscribe(subgroups => this.subgroups1 = subgroups);
+    this.sub = this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.restService.get(params['id']).subscribe(person => {
+          this.edit = true;
+          this.person = person;
+          this.subgroupControl.setValue(person.subgroupId);
+          this.plzControl.setValue(person.plz);
+          this.cityControl.setValue(person.city);
+          new GenericRestService<ISubgroup>(this.http, "/api/subgroups").get(person.subgroupId).subscribe(subgroup => {
+            new GenericRestService<IGroup>(this.http, "/api/groups").get(subgroup.groupId).subscribe(group => {
+              this.group = group;
+              this.subgroup = subgroup;
+              this.subgroupControl.setValue(subgroup);
+              this.filteredSubgroups = this.subgroups1.filter(subgroup => subgroup.groupId === group.id).toList();
+            })
+          });
+        });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   private getPlzObservable(input: Observable<string>): Observable<string> {
@@ -69,9 +99,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   private updateSubgroup(group: IGroup) {
-    if (event) {
+    if (group) {
       this.subgroupControl.reset();
-      this.filteredSubgroups = this.subgroups1.map(subgroups => List<ISubgroup>(subgroups.filter(subgroup => subgroup.groupId === group.id)));
+      this.filteredSubgroups = this.subgroups1.filter(subgroup => subgroup.groupId === group.id).toList();
     }
   }
 
@@ -94,12 +124,22 @@ export class RegistrationComponent implements OnInit {
       leader: !!data.leader,
     };
     console.log(person);
-    person.createDate = new Date();
     // write to DB
-    this.busy = this.restService.add(person).subscribe((person: IPerson) => {
-      this.router.navigate(["registration/confirmation"]);
-    }, (err: any) => {
-      this.router.navigate(["error"]);
-    });
+    if (!this.edit) {
+      person.createDate = new Date();
+      this.busy = this.restService.add(person).subscribe((person: IPerson) => {
+        this.router.navigate(["registration/confirmation"]);
+      }, (err: any) => {
+        this.router.navigate(["error"]);
+      });
+    } else {
+      person.createDate = this.person.createDate;
+      person.id = this.person.id;
+      this.busy = this.restService.update(person).subscribe((person: IPerson) => {
+        this.router.navigate(["/admin/dashboard/registrations"]);
+      }, (err: any) => {
+        this.router.navigate(["error"]);
+      });
+    }
   }
 }

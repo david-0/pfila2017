@@ -18,7 +18,7 @@ const routes: Routes = [
     {path: 'users', canActivate: [AuthGuard], component: UserAdminComponent},
     {path: 'groups', canActivate: [AuthGuard], component: GroupAdminComponent},
     {path: 'registrations', canActivate: [AuthGuard], component: RegistrationAdminComponent},
-    {path: 'change-person', canActivate: [AuthGuard], component: RegistrationComponent},
+    {path: 'change-person/:id', canActivate: [AuthGuard], component: RegistrationComponent},
     {path: 'change-password', canActivate: [AuthGuard], component: PasswordChangeComponent},
     {
       path: 'password-confirmation',
