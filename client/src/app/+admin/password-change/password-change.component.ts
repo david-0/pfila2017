@@ -39,7 +39,7 @@ export class PasswordChangeComponent implements OnInit {
       user => {
         user.password = password;
         this.restService.update(user).subscribe(user => {
-          this.router.navigate(['/admin/dashboard', {outlets: {admin: ['password-confirmation']}}]);
+          this.router.navigate(['/admin/dashboard/password-confirmation']);
         }, error => {
           this.message = `Fehler beim Passwot ändern (${error})`;
         });
