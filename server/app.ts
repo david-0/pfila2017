@@ -70,10 +70,9 @@ class Server {
 
   private createServer() {
     this.server = https.createServer({
-      key: fs.readFileSync('../../certificate/pfila2017-mutig-vorwaerts.ch.key'),
-      cert: fs.readFileSync('../../certificate/www.pfila2017-mutig-vorwaerts.ch.pem'),
-      ca: fs.readFileSync('../../certificate/ca.crt'),
-      passphrase: 'BR244ez6AeZA6RQ3'
+      key: fs.readFileSync('../../certificate/privkey.pem'),
+      cert: fs.readFileSync('../../certificate/cert.pem'),
+      ca: fs.readFileSync('../../certificate/chain.pem')
     }, this.app);
   }
 
