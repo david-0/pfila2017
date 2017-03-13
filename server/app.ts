@@ -72,6 +72,7 @@ class Server {
     this.server = https.createServer({
       key: fs.readFileSync('../../certificate/pfila2017-mutig-vorwaerts.ch.key'),
       cert: fs.readFileSync('../../certificate/www.pfila2017-mutig-vorwaerts.ch.pem'),
+      ca: fs.readFileSync('../../certificate/ca.crt'),
       passphrase: 'BR244ez6AeZA6RQ3'
     }, this.app);
   }
