@@ -6,6 +6,8 @@ import * as log4js from "log4js";
 import {Logger, getLogger} from "./utils/logger";
 import {DBService} from "./models/db.service";
 import * as http from "http";
+import * as https from "https";
+import * as fs from "fs";
 import * as path from "path";
 import * as socketIo from "socket.io";
 import {GenericRouter} from "./routes/generic.router";
@@ -55,17 +57,39 @@ class Server {
     this.routes();
 
     // Create server
-    this.server = http.createServer(this.app);
+    this.createServer();
 
     // Handle websockets
     this.sockets();
 
     // Start listening
     this.listen();
+
+    this.redirectHttp();
+  }
+
+  private createServer() {
+    this.server = https.createServer({
+      key: fs.readFileSync('../../certificate/pfila2017-mutig-vorwaerts.ch.key'),
+      cert: fs.readFileSync('../../certificate/www.pfila2017-mutig-vorwaerts.ch.pem'),
+      passphrase: 'BR244ez6AeZA6RQ3'
+    }, this.app);
+  }
+
+  private redirectHttp() {
+    // set up plain http server
+    let httpApp = express();
+    let httpServer = http.createServer(httpApp);
+
+    httpApp.use('*', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+      res.redirect('https://pfila2017-mutig-vorwaerts.ch'+req.url);
+    });
+
+    httpServer.listen(80);
   }
 
   private config(): void {
-    this.port = process.env.PORT || 3001;
+    this.port = process.env.PORT || 443;
     this.root = path.join(__dirname);
     this.host = 'localhost';
   }
