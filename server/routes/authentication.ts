@@ -50,7 +50,7 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
 // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
 authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request, res: express.Response, next: express.NextFunction) {
   if (req.user) {
-    LOGGER.info(`userid: ${req.user.id}, username: ${req.user.email}, type: ${req.user.type}, req.body: ` + JSON.stringify(req.body));
+    LOGGER.debug(`userid: ${req.user.id}, username: ${req.user.email}, type: ${req.user.type}, req.body.email: ${req.body.email}`);
     next();
   } else {
     res.status(401).json({error: 'not yet authenticated'});
