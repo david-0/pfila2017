@@ -19,8 +19,8 @@
     }
   ],
   "levels": {
-    "[all]": "DEBUG",
-    "GenericDataController": "DEBUG",
-    "GenericSocket": "DEBUG"
+    "[all]": "INFO",
+    "GenericDataController": "INFO",
+    "GenericSocket": "INFO"
   }
 }
