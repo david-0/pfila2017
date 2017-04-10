@@ -31,17 +31,17 @@ export class GenericSocket {
   }
 
   public del(value: any) {
-    LOGGER.info(`websocket.delete namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
+    LOGGER.debug(`websocket.delete namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
     this.namespace.emit("delete", value);
   }
 
   public update(value: any) {
-    LOGGER.info(`websocket.update namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
+    LOGGER.debug(`websocket.update namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
     this.namespace.emit("update", value);
   }
 
   public create(value: any) {
-    LOGGER.info(`websocket.create namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
+    LOGGER.debug(`websocket.create namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
     this.namespace.emit("create", value);
   }
 

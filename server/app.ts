@@ -14,7 +14,7 @@ import {GenericRouter} from "./routes/generic.router";
 import {SocketService} from "./socket/socket-service";
 import {PersonController} from "./controllers/person.controller";
 import {getAuthenticationRoute} from './routes/authentication';
-import {requiresStandardOrAdmin} from "./routes/authorization";
+import {requiresAdmin, requiresStandardOrAdmin} from "./routes/authorization";
 import {UserController} from "./controllers/user.controller";
 import {GroupController} from "./controllers/group.controller";
 import {SubgroupController} from "./controllers/subgroup.controller";
@@ -100,13 +100,13 @@ class Server {
   }
 
   private redirectHttp() {
-    LOGGER.info(`Redirect from ${this.portHttp} to ${this.portHttps}.` );
+    LOGGER.info(`Redirect from ${this.portHttp} to ${this.portHttps}.`);
     // set up plain http server
     let httpApp = express();
     let httpServer = http.createServer(httpApp);
 
     httpApp.use('*', function (req: express.Request, res: express.Response, next: express.NextFunction) {
-      res.redirect('https://pfila2017-mutig-vorwaerts.ch'+req.url);
+      res.redirect('https://pfila2017-mutig-vorwaerts.ch' + req.url);
     });
 
     httpServer.listen(this.portHttp);
@@ -165,7 +165,7 @@ class Server {
     this.app.use('/api/persons', GenericRouter.del(personController));
     this.app.use('/api/groups', GenericRouter.del(groupController));
     this.app.use('/api/subgroups', GenericRouter.del(subgroupController));
-    this.app.use('/api/users', requiresStandardOrAdmin, GenericRouter.all(userController));
+    this.app.use('/api/users', requiresAdmin, GenericRouter.all(userController));
     personController.init();
     groupController.init();
     subgroupController.init();
@@ -193,7 +193,7 @@ class Server {
     // Get socket.io handle
     this.io = socketIo(this.server);
     this.io.use(socketioJwt.authorize({
-      secret: 'secret',
+      secret: this.jwtConfig.getVerifySecret(),
       handshake: true
     }));
 

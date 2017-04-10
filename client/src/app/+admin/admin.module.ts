@@ -22,6 +22,7 @@ import {EqualValidator} from "./password-change/equals-validator.directives";
 import {ValidatorsModule} from "ng2-validators";
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 import {RegistrationModule} from "../+registration/registration.module";
+import {PasswordChangeRestService} from "../remote/password-change-rest.service";
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -63,6 +64,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
     ClientSocketService,
     AuthenticationService,
+    PasswordChangeRestService,
   ],
   bootstrap: [
     ConfirmationDialogComponent
