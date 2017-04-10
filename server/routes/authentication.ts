@@ -5,63 +5,66 @@ import express = require('express');
 import eJwt = require('express-jwt');
 import jwt = require('jsonwebtoken');
 import bcrypt = require('bcrypt');
+import {JwtConfiguration} from "../utils/jwt-configuration";
 
 export let authenticationRoute = express.Router();
 
 const LOGGER: Logger = getLogger('authentication');
+export function getAuthenticationRoute(jwtConfig: JwtConfiguration) {
 
-authenticationRoute.post('/api/authenticate', function (req: express.Request, res: express.Response, next: express.NextFunction) {
-  let jsonBody: string = JSON.stringify(req.body);
-  LOGGER.info(`authenticate: ${jsonBody}`);
-  let email: String = req.body.email;
-  let password: String = req.body.password;
-  let selector = {'email': email}
-  UserModel.find(selector, (err: any, users: IUserDocument[]) => {
-    if (err) {
-      res.status(401).json({error: `email ${email} unknown. ${err}`});
-    } else {
-      // verify the password
-      if (users.length) {
-        bcrypt.compare(password, users[0].password, (err, result) => {
-          if (err || !result) {
-            res.status(401).json({error: `Incorrect username or password.`});
-          } else {
-            let user: IUserDocument = users[0];
-            user.id = user._id;
-            // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
-            let authToken = jwt.sign({
-              id: user.id,
-              email: user.email,
-              type: user.type
-            }, "secret", {expiresIn: "1h"});
-            LOGGER.info(`user ${user.email} authenticated successfully`);
-            res.json({
-              token: authToken
-            })
-          }
-        });
+  authenticationRoute.post('/api/authenticate', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    let jsonBody: string = JSON.stringify(req.body);
+    LOGGER.info(`authenticate: ${jsonBody}`);
+    let email: String = req.body.email;
+    let password: String = req.body.password;
+    let selector = {'email': email}
+    UserModel.find(selector, (err: any, users: IUserDocument[]) => {
+      if (err) {
+        res.status(401).json({error: `email ${email} unknown. ${err}`});
       } else {
-        res.status(401).json({error: `Incorrect username or password.`});
+        // verify the password
+        if (users.length) {
+          bcrypt.compare(password, users[0].password, (err, result) => {
+            if (err || !result) {
+              res.status(401).json({error: `Incorrect username or password.`});
+            } else {
+              let user: IUserDocument = users[0];
+              user.id = user._id;
+              // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
+              let authToken = jwt.sign({
+                id: user.id,
+                email: user.email,
+                type: user.type
+              }, "secret", {expiresIn: "1h"});
+              LOGGER.info(`user ${user.email} authenticated successfully`);
+              res.json({
+                token: authToken
+              })
+            }
+          });
+        } else {
+          res.status(401).json({error: `Incorrect username or password.`});
+        }
       }
-    }
+    });
   });
-});
 
 // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
-authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request, res: express.Response, next: express.NextFunction) {
-  if (req.user) {
-    LOGGER.debug(`userid: ${req.user.id}, username: ${req.user.email}, type: ${req.user.type}, req.body.email: ${req.body.email}`);
-    next();
-  } else {
-    res.status(401).json({error: 'not yet authenticated'});
-  }
-});
+  authenticationRoute.use('/api', eJwt({secret: jwtConfig.getVerifySecret()}), function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.user) {
+      LOGGER.debug(`userid: ${req.user.id}, username: ${req.user.email}, type: ${req.user.type}, req.body.email: ${req.body.email}`);
+      next();
+    } else {
+      res.status(401).json({error: 'not yet authenticated'});
+    }
+  });
 
 // Used for REST test
-authenticationRoute.get('/api/authenticated', function (req: express.Request, res: express.Response, next: express.NextFunction) {
-  res.json('authentication is valid');
-});
-
+  authenticationRoute.get('/api/authenticated', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    res.json('authentication is valid');
+  });
+  return authenticationRoute;
+}
 // Augmenting the express Request interface with user: IUser to have user access where ever express.Request is used.
 declare module '@types/express' {
   export interface Request {

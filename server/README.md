@@ -58,3 +58,34 @@ Server and test running in one terminal:
 Optionally you can run the server and the test in dedicated terminal:
 * Start the server in one terminal
 * Execute `jasmine` or `gulp jasmine` in a 2nd terminal
+
+
+## Production Mode
+
+In Production Mode, the server will use a public and a private key for jwt token.
+Without the keys, he will not start. To start the server in production mode, set
+the environment variable NODE_ENV to 'production'. 
+
+* The private.key file must be named '../../ha-key'
+* The public.key file must be named '../../ha-key.pub'
+
+To create this key, you can use:
+```
+openssl genpkey -algorithm RSA -out ../../ha-key -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in ../../ha-key -out ../../ha-key.pub
+```
+
+### key and cert for SSL
+```
+openssl req -new > cert.csr
+openssl rsa -in privkey.pem -out key.pem
+openssl x509 -in cert.csr -out cert.pem -req -signkey key.pem -days 1001
+```
+
+### Allow port 80 and 443 without root
+https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps#give-safe-user-permission-to-use-port-80
+Port less than 1024
+```
+sudo apt-get install libcap2-bin
+sudo setcap cap_net_bind_service=+ep /usr/bin/nodejs
+```

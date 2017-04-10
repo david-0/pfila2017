@@ -13,11 +13,12 @@ import * as socketIo from "socket.io";
 import {GenericRouter} from "./routes/generic.router";
 import {SocketService} from "./socket/socket-service";
 import {PersonController} from "./controllers/person.controller";
-import {authenticationRoute} from './routes/authentication';
+import {getAuthenticationRoute} from './routes/authentication';
 import {requiresStandardOrAdmin} from "./routes/authorization";
 import {UserController} from "./controllers/user.controller";
 import {GroupController} from "./controllers/group.controller";
 import {SubgroupController} from "./controllers/subgroup.controller";
+import {JwtConfiguration} from "./utils/jwt-configuration";
 
 const LOGGER: Logger = getLogger('Server');
 
@@ -31,8 +32,13 @@ class Server {
   private io: SocketIO.Server;
   private root: string;
   private port: number;
+  private protocoll: string;
+  private portHttps: number;
+  private portHttp: number;
   private host: string;
+  private env: string;
   private socketService: SocketService;
+  private jwtConfig: JwtConfiguration;
 
   // Bootstrap the application.
   public static bootstrap(): Server {
@@ -64,19 +70,37 @@ class Server {
 
     // Start listening
     this.listen();
-
-    this.redirectHttp();
   }
 
   private createServer() {
-    this.server = https.createServer({
-      key: fs.readFileSync('../../certificate/privkey.pem'),
+    if (this.env === 'production' || fs.exists('../../certificate/privkey.pem')) {
+      this.redirectHttp();
+      this.server = this.createHttpsServer();
+    } else {
+      this.server = this.createHttpServer();
+    }
+  }
+
+  private createHttpsServer() {
+    LOGGER.info("Start HTTPS server");
+    this.port = this.portHttps;
+    this.protocoll = 'https';
+    return https.createServer({
+      key: fs.readFileSync('../../certificate/key.pem'),
       cert: fs.readFileSync('../../certificate/cert.pem'),
       ca: fs.readFileSync('../../certificate/chain.pem')
     }, this.app);
   }
 
+  private createHttpServer() {
+    LOGGER.info("Start HTTP server");
+    this.port = this.portHttp;
+    this.protocoll = 'http';
+    return http.createServer(this.app);
+  }
+
   private redirectHttp() {
+    LOGGER.info(`Redirect from ${this.portHttp} to ${this.portHttps}.` );
     // set up plain http server
     let httpApp = express();
     let httpServer = http.createServer(httpApp);
@@ -85,13 +109,25 @@ class Server {
       res.redirect('https://pfila2017-mutig-vorwaerts.ch'+req.url);
     });
 
-    httpServer.listen(80);
+    httpServer.listen(this.portHttp);
   }
 
   private config(): void {
-    this.port = process.env.PORT || 443;
+    this.portHttps = process.env.PORT || 3002;
+    this.portHttp = process.env.PORT_HTTP || 3001;
     this.root = path.join(__dirname);
     this.host = 'localhost';
+    this.env = process.env.NODE_ENV || 'development';
+
+    this.jwtConfig = new JwtConfiguration(this.env);
+    if (this.env === "production") {
+      this.jwtConfig.initProd('../../ha-key', '../../ha-key.pub');
+      this.portHttps = process.env.PORT || 443;
+      this.portHttp = process.env.PORT_HTTP || 80;
+      LOGGER.info(`PRODUCTION-MODE, use private/public keys.`);
+    } else {
+      LOGGER.info(`DEVELOPMENT-MODE, use shared secret.`);
+    }
   }
 
   private routes(): void {
@@ -120,7 +156,7 @@ class Server {
     this.app.use('/api/persons', GenericRouter.post(personController));
     this.app.use('/api/persons', GenericRouter.put(personController));
     this.app.use('/api/persons', GenericRouter.getOne(personController));
-    this.app.use(authenticationRoute);
+    this.app.use(getAuthenticationRoute(this.jwtConfig));
     this.app.use('/api/persons', GenericRouter.getAll(personController));
     this.app.use('/api/groups', GenericRouter.post(groupController));
     this.app.use('/api/subgroups', GenericRouter.post(subgroupController));
@@ -175,9 +211,8 @@ class Server {
 
     //start listening on port
     this.server.on("listening", () => {
-      LOGGER.info(`Homeautomation server running at http://${this.host}:${this.port}/`);
+      LOGGER.info(`Pfila2017 server running at ${this.protocoll}://${this.host}:${this.port}/`);
     });
-
   }
 
   private errorHandler(err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
