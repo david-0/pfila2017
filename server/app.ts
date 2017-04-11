@@ -86,7 +86,7 @@ class Server {
     this.port = this.portHttps;
     this.protocoll = 'https';
     return https.createServer({
-      key: fs.readFileSync('../../certificate/key.pem'),
+      key: fs.readFileSync('../../certificate/privkey.pem'),
       cert: fs.readFileSync('../../certificate/cert.pem'),
       ca: fs.readFileSync('../../certificate/chain.pem')
     }, this.app);
